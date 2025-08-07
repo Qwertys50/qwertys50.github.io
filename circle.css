@@ -8,6 +8,8 @@
     overflow: hidden;
 }
 
+
+
 .circles li{
 
     position: absolute;
@@ -124,5 +126,22 @@
         transform: translateY(-400px) rotate(720deg);
         opacity: 1;
         border-radius: 50%;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+
+    @keyframes animate {
+        0% {
+            transform: translateY(-150px) rotate(0deg);
+            opacity: 1;
+            border-radius: 0;
+        }
+        100% {
+            transform: translateY(-800px) rotate(720deg);
+            opacity: 1;
+            border-radius: 50%;
+        }
     }
 }

@@ -122,6 +122,19 @@ header{
         width: 30px;
         height: 30px;
     }
+
+    main{
+        
+        display: grid !important;
+    }
+
+    .cardBox{
+        
+        width: 350px !important;
+    }
+    .circles li{
+        scale: 0.5;
+    }
 }
 
 @media screen and (max-width: 400px) {
