@@ -6,13 +6,29 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="circle.css">
     <link rel="stylesheet" href="card.css">
+    <link rel="stylesheet" href="loader.css">
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <title>Document</title>
+
+    <style>
+  
+    </style>
 </head>
 <body>
-    
+    <div class="fullscreen-loader notranslate">
+        <div class="loader-content">
+            <div class="loader-title">Projects</div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+        </div>
+        <div id="loader-footer">
+            Type: image | URL: https://roblox.com
+        </div>
+    </div>
+
     <header>
         <div class="container"></div>
         <div class="origin_text">My Projects</div>
@@ -123,90 +139,7 @@
 </body>
 <script src="js/container.js"></script>
 <script src="js/slider.js"></script>
-<script>
-// Функция для обработки одного блока игры
-async function processGameBlock(gameBlock) {
-    const placeId = gameBlock.getAttribute('id_places');
-    let universeId = 0;
-    let imageURL = "";
-    let info_game = {};
-
-    try {
-        const universeResponse = await axios({
-            url: `https://apis.roproxy.com/universes/v1/places/${placeId}/universe`,
-            method: 'GET'
-        });
-        
-        if (universeResponse.data.universeId) {
-            universeId = universeResponse.data.universeId;
-            
-            const gameInfoResponse = await axios({
-                url: `https://games.roproxy.com/v1/games?universeIds=${universeId}`,
-                method: 'GET'
-            });
-            
-            if (gameInfoResponse.data.data && gameInfoResponse.data.data[0]) {
-                info_game = gameInfoResponse.data.data[0];
-                
-                const imageResponse = await axios({
-                    url: `https://thumbnails.roproxy.com/v1/games/icons?universeIds=${universeId}&returnPolicy=PlaceHolder&size=256x256&format=Png&isCircular=false`,
-                    method: 'GET'
-                });
-                
-                if (imageResponse.data.data && imageResponse.data.data[0].imageUrl) {
-                    imageURL = imageResponse.data.data[0].imageUrl;
-                    
-                    updateGameBlock(gameBlock, info_game, imageURL);
-                }
-            }
-        }
-    } catch (error) {
-        console.error(`Error processing game block ${placeId}:`, error);
-    }
-}
-
-function updateGameBlock(gameBlock, gameInfo, imageUrl) {
-
-    const imageElement = gameBlock.querySelector('.place-image');
-    if (imageElement) {
-        imageElement.style.backgroundImage = `url('${imageUrl}')`;
-    }
-    
-
-    const nameElement = gameBlock.querySelector('.place-name a');
-    if (nameElement && gameInfo.name) {
-        nameElement.textContent = gameInfo.name;
-    }
-    
-
-    const creatorElement = gameBlock.querySelector('.place-creator');
-    if (creatorElement && gameInfo.creator) {
-        creatorElement.textContent = gameInfo.creator.name || "Unknown Creator";
-    }
-    
-
-    const onlineCountElement = gameBlock.querySelector('.online-count span:last-child');
-    if (onlineCountElement && gameInfo.playing) {
-        onlineCountElement.textContent = gameInfo.playing;
-    }
-    
-
-    const favoriteCountElement = gameBlock.querySelector('.favorite-count span');
-    if (favoriteCountElement && gameInfo.favoritedCount) {
-        favoriteCountElement.textContent = gameInfo.favoritedCount;
-    }
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const gameBlocks = document.querySelector('[active="roblox"]').querySelectorAll('.info[id_places]');
-    gameBlocks.forEach(block => {
-
-        console.log(block)
-        processGameBlock(block);
-    });
-});
-
-</script>
+<script src="js/loader.js"></script>
+<script src="js/roblox.js"></script>
 
 </html>
