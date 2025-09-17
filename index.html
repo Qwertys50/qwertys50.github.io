@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="circle.css">
     <link rel="stylesheet" href="card.css">
     <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="telegram.css">
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -28,7 +30,7 @@
             Type: image | URL: https://roblox.com
         </div>
     </div>
-
+    
     <header>
         <div class="container"></div>
         <div class="origin_text">My Projects</div>
@@ -53,87 +55,132 @@
 
     <main>
 
-        <div class="cardBox notranslate">
-            <div class="card">
-                <div class="viewed" style="background-image: url(images/background-roblox-studio.png);">
-                    <h2>ROBLOX STUDIO</h2>
-                </div>
-                <div class="content">
-                    <div class="slider-container notranslate">
-                        <div class="slider" active="roblox">
-                            <div class="info active" id_places="121504797323109">
+        <div class="cardBox1">
+            <div class="cardBox notranslate">
+                <div class="card">
+                    <div class="viewed" style="background-image: url(images/background-roblox-studio.png);">
+                        <h2>ROBLOX STUDIO</h2>
+                    </div>
+                    <div class="content">
+                        <div class="slider-container notranslate">
+                            <div class="slider" active="roblox">
+                                <div class="info active" id_places="121504797323109">
 
-                                <div class="place-card">
-                                    <div class="place-image"></div>
-                                    <div class="place-info">
-                                        <div class="place-name">
-                                            <a href="https://roblox.com/games/"></a>
-                                        </div>
-                                        <div class="place-creator"></div>
-                                        <div class="place-stats">
-                                            <div class="online-count">
-                                                <span class="stat-icon">👥</span>
-                                                <span>0</span>
+                                    <div class="place-card">
+                                        <div class="place-image"></div>
+                                        <div class="place-info">
+                                            <div class="place-name">
+                                                <a href="https://roblox.com/games/"></a>
                                             </div>
-                                            <div class="favorite-count">
-                                                <div class="favorite-count_img"></div>
-                                                <span></span>
+                                            <div class="place-creator"></div>
+                                            <div class="place-stats">
+                                                <div class="online-count">
+                                                    <span class="stat-icon">👥</span>
+                                                    <span>0</span>
+                                                </div>
+                                                <div class="favorite-count">
+                                                    <div class="favorite-count_img"></div>
+                                                    <span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="info" id_places="130955646755840">
+
+                                    <div class="place-card">
+                                        <div class="place-image"></div>
+                                        <div class="place-info">
+                                            <div class="place-name">
+                                                <a href="https://roblox.com/games/"></a>
+                                            </div>
+                                            <div class="place-creator"></div>
+                                            <div class="place-stats">
+                                                <div class="online-count">
+                                                    <span class="stat-icon">👥</span>
+                                                    <span>0</span>
+                                                </div>
+                                                <div class="favorite-count">
+                                                    <div class="favorite-count_img"></div>
+                                                    <span></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            
-                            <div class="info" id_places="130955646755840">
-
-                                <div class="place-card">
-                                    <div class="place-image"></div>
-                                    <div class="place-info">
-                                        <div class="place-name">
-                                            <a href="https://roblox.com/games/"></a>
-                                        </div>
-                                        <div class="place-creator"></div>
-                                        <div class="place-stats">
-                                            <div class="online-count">
-                                                <span class="stat-icon">👥</span>
-                                                <span>0</span>
-                                            </div>
-                                            <div class="favorite-count">
-                                                <div class="favorite-count_img"></div>
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="button_slider">
+                                <button id="prevBtn">Prev</button>
+                                <button id="nextBtn">Next</button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="button_slider">
-                            <button id="prevBtn">Prev</button>
-                            <button id="nextBtn">Next</button>
+            <div class="cardBox notranslate">
+                <div class="card">
+                    <div class="viewed" style="background-image: url(images/hikka.jpg);">
+                        <h2 class="notranslate">PYTHON — HIKKA</h2>
+                    </div>
+                    <div class="content">
+                        <div class="telegram-card">
+                            <div class="telegram-card__icon"></div>
+                            <div class="telegram-card__content">
+                                <div class="telegram-card__title">TELEGRAM</div>
+                                <a href="https://t.me/modules_qwertys" class="telegram-card__link">Hikka Modules Qwertyss</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="cardBox notranslate">
-            <div class="card">
-                <div class="viewed" style="background-image: url(images/hikka.jpg);">
-                    <h2 class="notranslate">PYTHON — HIKKA</h2>
+        <button id="toggleSlider" class="toggle-btn">Показать модули Hikka</button>
+        
+        <div id="sliderContainer" class="notranslate">
+            <div class="message">
+                <div class="avatar">
+                    <img src="images/Logo1.jpg" alt="Avatar">
                 </div>
-                <div class="content">
-                    <div class="telegram-card">
-                        <div class="telegram-card__icon"></div>
-                        <div class="telegram-card__content">
-                            <div class="telegram-card__title">TELEGRAM</div>
-                            <a href="https://t.me/modules_qwertys" class="telegram-card__link">Hikka Modules Qwertyss</a>
+                <div class="message_info">
+                    <div class="sender-name">Hikka Modules Qwertys</div>
+                    <div class="messages">      
+                        <div id="fileAttachment" onclick="downloadPythonFile()" class="file-attachment">
+                            <div class="file-icon">📁</div>
+                            <div class="file-info">
+                                <div id="fileName" class="file-name"></div>
+                                <div class="file-details">
+                                    <span id="fileSize"></span>
+                                </div>
+                            </div>
+                            <div class="download-button">Скачать</div>
+
                         </div>
+                        <div id="messageText" class="message-text"></div>
                     </div>
+                    <div id="messageTime" class="time"></div>
                 </div>
             </div>
+            
+            <br>
+            
+            <div class="center" style="gap: 25px;">
+                
+                <button class="nav-btn2 prev-btn2">←</button>
+                <button class="nav-btn2 next-btn2">→</button>
+            </div>
+            <div class="slider-controls">
+                <button class="nav-btn prev-btn">←</button>
+                <div id="sliderDots" class="slider-dots"></div>
+                <button class="nav-btn next-btn">→</button>
+            </div>
+
         </div>
+        
     </main>
 
 </body>
@@ -142,4 +189,295 @@
 <script src="js/loader.js"></script>
 <script src="js/roblox.js"></script>
 
+
+
+    <script>
+
+        const info = {
+            modules: [
+                {
+                    fileName: "StarsovEarnBypass.py",
+                    name: "StarsovEarnByPass",
+                    text: [
+                        "SEB - StarsovEarnBypass<br><br>",
+
+                        "Теперь он будет обрабатывать новые квесты без спама, так же добавил скип если оно просит буст"
+                    ],
+                    version: "0.0.2.1",
+                    size: "14.0 KB",
+                    time: "10.09.2025"
+                },                
+                {
+                    fileName: "StarsovEarnBypass.py",
+                    name: "StarsovEarnByPass",
+                    text: [
+                        "Версия 0.0.2<br>",
+                        "SEB - StarsovEarnBypass<br><br>",
+
+                        "Пофиксил капчу, теперь он должен нормально её проходить"
+                    ],
+                    version: "0.0.2",
+                    size: "14.0 KB",
+                    time: "29.08.2025"
+                },                
+                {
+                    fileName: "FlameStarsFarm.py",
+                    name: "FlameStarsFarm",
+                    text: [
+                        "Модуль для автоматического нажимания в @flamestarsbot. только для начало работы нужно будет написать /start и нажать на кнопку фарма, тогда он будет фармить<br><br>",
+
+                        "Фарм он начнет сразу после включения"
+                    ],
+                    version: "0.0.0",
+                    size: "3.8 KB",
+                    time: "29.08.2025"
+                },                
+                {
+                    fileName: "RolletSetEmoji.py",
+                    name: "RolletSetEmoji",
+                    text: [
+                        "Модуль для ловли нужной комбинации эмодзи в 🎰<br><br>",
+
+                        ".set_emoji [emoji] — будет начинать подбирать комбинацию в 🎰 ||путем отправления||<br>",
+                        ".stop — остановит процесс"
+                    ],
+                    version: "0.0.0",
+                    size: "4.2 KB",
+                    time: "29.08.2025"
+                },                
+                {
+                    fileName: "StarsovEarnBypass.py",
+                    name: "StarsovEarnByPass",
+                    text: [
+                        "Добавил так чтобы он скипал квесты в которых есть задания на квесты<br><br>",
+
+                        ".Просто добавил скип то где есть фраза 'дождитесь прогрузки ссылки'"
+                    ],
+                    version: "0.0.1.5",
+                    size: "13.9 KB",
+                    time: "17.08.2025"
+                },                
+                {
+                    fileName: "StarsovEarnBypass.py",
+                    name: "StarsovEarnByPass",
+                    text: [
+                        "Версия 0.0.1<br>",
+                        "SEB - StarsovEarnBypass<br><br>",
+
+                        "Обновление:<br>",
+                        "1. Теперь он собирает чеки с новостей.<br>",
+                        "2. Новые каналы перемещает в папку 'МУСОР' (если её нету он её создаст) <br>",
+                        "3. И то как обещал, он теперь может писать боту ||(только не блокируйте ботов этих в будущем... а то он им вообще писать не сможет...)||"
+                    ],
+                    version: "0.0.1",
+                    size: "13.7 KB",
+                    time: "16.08.2025"
+                },                
+                {
+                    fileName: "StarsovEarnBypass.py",
+                    name: "StarsovEarnByPass",
+                    text: [
+                        "Модуль для авто фарма в @StarsovEarnBot<br>",
+                        "SEB - StarsovEarnBypass<br><br>",
+
+                        ".seb — Зайти в канал/написать боту ||Пока боту он писать не умеет, планируется в след версии||",
+                    ],
+                    version: "0.0.0",
+                    size: "7.9 KB",
+                    time: "06.08.2025"
+                },                
+                {
+                    fileName: "GetWaifu.py",
+                    name: "GetWaifu",
+                    text: [
+                        "Модуль для авто лови вайфу в @garem_chatbot<br><br>",
+
+                        ".setting — Добавление чата в авто ловлю<br>",
+                        ".getwaifu — выводит имя вайфу если она есть в базе данных<br><br>",
+
+                        "Базу данных обязательно надо скачивать, после первого использования .getwaifu оно скачается само",
+                    ],
+                    version: "0.0.0",
+                    size: "16.4 KB",
+                    time: "06.08.2025"
+                }
+            ]
+        };
+
+        let currentModuleIndex = 0;
+
+        function updateSlider() {
+            const module = info.modules[currentModuleIndex];
+            const fileNameEl = document.getElementById('fileName');
+            const fileSizeEl = document.getElementById('fileSize');
+            const messageTextEl = document.getElementById('messageText');
+            const messageTimeEl = document.getElementById('messageTime');
+            const fileAttachmentEl = document.getElementById('fileAttachment');
+            
+            if (module.fileName) {
+                fileNameEl.textContent = module.fileName;
+                fileAttachmentEl.classList.remove('hidden');
+            } else {
+                fileAttachmentEl.classList.add('hidden');
+            }
+            
+            if (module.size) {
+                fileSizeEl.textContent = module.size;
+            } else {
+                fileSizeEl.textContent = '';
+            }
+            
+            if (module.text && module.text.length > 0) {
+                messageTextEl.innerHTML = module.text.join('');
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = messageTextEl.innerHTML;
+                tempDiv.style.cssText = 'position: absolute; visibility: hidden; width: 100%;';
+                document.body.appendChild(tempDiv);
+                
+                const oldReadMore = document.querySelector('.read-more');
+                if (oldReadMore) {
+                    oldReadMore.remove();
+                }
+                
+                if (tempDiv.scrollHeight > 120) {
+                    messageTextEl.classList.add('collapsed');
+                    
+                    const readMoreBtn = document.createElement('div');
+                    readMoreBtn.className = 'read-more';
+                    readMoreBtn.textContent = 'Больше...';
+                    readMoreBtn.onclick = function() {
+                        messageTextEl.classList.toggle('collapsed');
+                        this.textContent = messageTextEl.classList.contains('collapsed') ? 'Больше...' : 'Скрыть';
+                    };
+                    
+                    messageTextEl.parentNode.appendChild(readMoreBtn);
+                } else {
+                    messageTextEl.classList.remove('collapsed');
+                }
+                
+                document.body.removeChild(tempDiv);
+            } else {
+                messageTextEl.innerHTML = '';
+            }
+            
+            if (module.time) {
+                messageTimeEl.textContent = module.time;
+            } else {
+                messageTimeEl.textContent = '';
+            }
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, index) => {
+                if (index === currentModuleIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+
+        async function downloadPythonFile() {
+
+            const module = info.modules[currentModuleIndex];
+            
+            let version = ""
+
+            console.log(module.version, module.version != "0.0.0")
+            if (module.version != "0.0.0") {version = module.version}
+            console.log(version)
+
+            const fileUrl = `https://raw.githubusercontent.com/Qwertys50/Modules/refs/heads/main/${module.name}${version}.py`;
+            const fileName = `${module.name}.py`;
+            
+            try {
+                const response = await fetch(fileUrl);
+                if (!response.ok) throw new Error('Файл не найден');
+                
+                const fileContent = await response.text();
+                const blob = new Blob([fileContent], { type: 'text/python' });
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                window.open(fileUrl, '_blank');
+            }
+        }
+
+        function initSlider() {
+            const sliderDots = document.getElementById('sliderDots');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+
+            const prevBtn2 = document.querySelector('.prev-btn2');
+            const nextBtn2 = document.querySelector('.next-btn2');
+            
+            sliderDots.innerHTML = '';
+            for (let i = 0; i < info.modules.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = i === 0 ? 'dot active' : 'dot';
+                dot.setAttribute('data-index', i);
+                dot.addEventListener('click', function() {
+                    currentModuleIndex = parseInt(this.getAttribute('data-index'));
+                    updateSlider();
+                });
+                sliderDots.appendChild(dot);
+            }
+            
+            prevBtn.addEventListener('click', function() {
+                currentModuleIndex = (currentModuleIndex - 1 + info.modules.length) % info.modules.length;
+                updateSlider();
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                currentModuleIndex = (currentModuleIndex + 1) % info.modules.length;
+                updateSlider();
+            });
+
+            prevBtn2.addEventListener('click', function() {
+                currentModuleIndex = (currentModuleIndex - 1 + info.modules.length) % info.modules.length;
+                updateSlider();
+            });
+            
+            nextBtn2.addEventListener('click', function() {
+                currentModuleIndex = (currentModuleIndex + 1) % info.modules.length;
+                updateSlider();
+            });
+            
+            updateSlider();
+        }
+
+        function toggleSlider() {
+            const sliderContainer = document.getElementById('sliderContainer');
+            const toggleBtn = document.getElementById('toggleSlider');
+            
+            if (sliderContainer.style.display === 'none' || !sliderContainer.style.display) {
+                sliderContainer.style.display = 'block';
+                toggleBtn.textContent = 'Скрыть модули Hikka';
+                
+                if (document.getElementById('sliderDots').children.length === 0) {
+                    initSlider();
+                }
+            } else {
+                sliderContainer.style.display = 'none';
+                toggleBtn.textContent = 'Показать модули Hikka';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('toggleSlider').addEventListener('click', toggleSlider);
+        });
+
+
+    </script>
 </html>

@@ -40,7 +40,7 @@
     padding: 10px 0;
     white-space: nowrap;
     overflow: hidden;
-    font-size: 16px; /* Начальный размер шрифта */
+    font-size: 16px;
 }
 
 .loader-progress {
