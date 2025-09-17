@@ -119,11 +119,11 @@ header{
     
     .container .box{
 
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
     }
 
-    main{
+    .cardBox1{
         
         display: grid !important;
     }
@@ -153,7 +153,17 @@ header{
 
 main{
     padding: 10px 30px;
-    display: flex;
     align-items: baseline;
     justify-content: center;
+}
+
+.cardBox1{
+    display: flex;
+    justify-content: center;
+}
+
+.center{
+
+    justify-content: center;
+    display: flex;
 }

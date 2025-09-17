@@ -49,7 +49,6 @@ function updateGameBlock(gameBlock, gameInfo, imageUrl) {
     const nameElement = gameBlock.querySelector('.place-name a');
     if (nameElement && gameInfo.name) {
         nameElement.textContent = gameInfo.name;
-        nameElement.href = `https://roblox.com/games/${gameInfo.rootPlaceId}/${gameInfo.name}`
     }
     
 
@@ -80,4 +79,3 @@ document.addEventListener('DOMContentLoaded', () => {
         processGameBlock(block);
     });
 });
-
