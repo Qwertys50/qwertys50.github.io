@@ -29,7 +29,7 @@ async function processGameBlock(gameBlock) {
                 if (imageResponse.data.data && imageResponse.data.data[0].imageUrl) {
                     imageURL = imageResponse.data.data[0].imageUrl;
                     
-                    updateGameBlock(gameBlock, info_game, imageURL);
+                    updateGameBlock(gameBlock, info_game, imageURL, placeId);
                 }
             }
         }
@@ -38,7 +38,7 @@ async function processGameBlock(gameBlock) {
     }
 }
 
-function updateGameBlock(gameBlock, gameInfo, imageUrl) {
+function updateGameBlock(gameBlock, gameInfo, imageUrl, placeId) {
 
     const imageElement = gameBlock.querySelector('.place-image');
     if (imageElement) {
@@ -47,8 +47,13 @@ function updateGameBlock(gameBlock, gameInfo, imageUrl) {
     
 
     const nameElement = gameBlock.querySelector('.place-name a');
+    if (gameBlock == null){
+
+        gameBlock = {name:"None", rootPlaceId: placeId}
+    }
     if (nameElement && gameInfo.name) {
         nameElement.textContent = gameInfo.name;
+        nameElement.href = `https://roblox.com/games/${gameInfo.rootPlaceId}`
     }
     
 
