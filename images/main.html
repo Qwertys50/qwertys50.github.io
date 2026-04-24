@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="margin:0; display:flex; justify-content:center; align-items:center; min-height:100vh; background:#000;">
+    <script>
+        // Берем данные из URL параметра
+        const urlParams = new URLSearchParams(window.location.search);
+        const base64Data = urlParams.get('data');
+        
+        if (base64Data) {
+            // Создаем изображение из base64
+            const img = new Image();
+            img.src = `data:image/png;base64,${base64Data}`;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100vh';
+            img.style.objectFit = 'contain';
+            document.body.appendChild(img);
+        } else {
+            // Если нет data параметра
+            document.body.innerHTML = '<div style="color:white; font-family:monospace;">Нет параметра ?data=base64...</div>';
+        }
+    </script>
+</body>
+</html>
