@@ -12,7 +12,7 @@ game.Players.PlayerAdded:Connect(function(player)
 
             queue_on_teleport(string.format([[
                 loadstring(game:HttpGet("%s"))()
-            ]], "https://raw.githubusercontent.com/Qwertys50/Cheat/refs/heads/main/test2.lua"))
+            ]], "http://qwertys50.github.io/scripts/roblox_cheat/doors_farm_death.luau"))
         end)
 
     end
@@ -26,7 +26,7 @@ for _, i in ipairs(game.Players:GetPlayers()) do
 
             queue_on_teleport(string.format([[
                 loadstring(game:HttpGet("%s"))()
-            ]], "https://raw.githubusercontent.com/Qwertys50/Cheat/refs/heads/main/test2.lua"))
+            ]], "http://qwertys50.github.io/scripts/roblox_cheat/doors_farm_death.luau"))
         end)
     end
 end
@@ -103,10 +103,20 @@ end
 ch:PivotTo(CFrame6)
 task.wait(0.5)
 
+local function GetProxiOpen()
+    for _, i in ipairs(workspace.CurrentRooms["0"].Door:GetDescendants()) do
+        
+        if i:IsA("ProximityPrompt") then return i end
+    end
+end
+
+local promptUnlock = GetProxiOpen()
+
 while not ended do
             
     ch.PrimaryPart.CFrame = CFrame.new(265.486267, -0.400000364, -48.4754181, 0.999383152, 3.15590509e-09, 0.0351186804, -2.2460569e-09, 1, -2.59472621e-08, -0.0351186804, 2.5852378e-08, 0.999383152)
-    fireproximityprompt(workspace.CurrentRooms["0"].Door.Lock.UnlockPrompt)
+
+    fireproximityprompt(promptUnlock)
 
     task.wait(0)
 end
