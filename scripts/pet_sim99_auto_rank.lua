@@ -381,7 +381,7 @@ end
 
 local function SpawnedPinata()
     return game:GetService("ReplicatedStorage").Network.MiniPinata_Consume:InvokeServer(
-        GetItem("Piñata", true)
+        GetItem("Pi\u{00F1}ata", true)
     )
 end
 
