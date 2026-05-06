@@ -424,95 +424,103 @@ print("\n\n\n\n\n\n")
 local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
 local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
 
+local mes, error = pcall(function()
+    local Window = Library:CreateWindow({
+        Title = "Bread",
+        Footer = "version: 1.0.0",
+        Icon = 95816097006870,
+        NotifySide = "Right",
+        ToggleKeybind = Enum.KeyCode.RightControl,
+    })
 
-local Window = Library:CreateWindow({
-	Title = "Bread",
-	Footer = "version: 1.0.0",
-	Icon = 95816097006870,
-	NotifySide = "Right",
-	ToggleKeybind = Enum.KeyCode.RightControl,
-})
+    local tzOffset = os.time() - os.time(os.date("!*t"))
+    local currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
 
-local tzOffset = os.time() - os.time(os.date("!*t"))
-local currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
+    local Watermark = Library:AddDraggableLabel(player.Name .. " | " .. currentTime)
 
-local Watermark = Library:AddDraggableLabel(player.Name .. " | " .. currentTime)
+    task.spawn(function()
+        while task.wait(0.3) do
 
-task.spawn(function()
-	while task.wait(0.3) do
+            tzOffset = os.time() - os.time(os.date("!*t"))
+            currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
+            Watermark:SetText(player.Name .. " | " .. currentTime)
+        end
+    end)
 
-		tzOffset = os.time() - os.time(os.date("!*t"))
-		currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
-		Watermark:SetText(player.Name .. " | " .. currentTime)
-	end
+    Library:Notify({
+        Title = "Bread",
+        Description = "GUI loaded successfully!",
+        Time = 4,
+    })
+
+
+    local function Home()
+
+        local home = Window:AddTab({
+            Name = "Home",
+            Description = "Home)",
+            Icon = "box"
+        })
+
+        local LeftGroupBox = home:AddLeftGroupbox("Player", "user")
+        LeftGroupBox:AddLabel('[<font color="rgb(73, 230, 133)">Name</font>] '..player.Name, false)
+
+        LeftGroupBox:AddImage("MyImage", {
+            Image =  game.Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
+            Callback = function(image)
+                print("Image changed!", image)
+            end,
+        })
+
+
+        local Info = home:AddRightGroupbox("INFO")
+
+        Info:AddCheckbox("MyPseudoCodeCheckbox", {
+            Text = "Farm Started",
+            Default = false,
+            Callback = function(val)
+                active_farm = val
+            end
+        })
+
+        
+        slider = Info:AddSlider("Sensitivity", {
+            Text = "Rank Progression",
+            Default = 0,
+            Min = 0,
+            Max = 1000,
+            Rounding = 0,
+            Callback = function()
+                slider:SetValue(stars)
+            end
+        })
+
+        local socialGroup = home:AddRightGroupbox("Social")
+        socialGroup:AddDivider("INFORMATION")
+
+        socialGroup:AddButton({
+            Text = "Discord",
+            Callback = function()
+                setclipboard("https://discord.gg/qaQWkR9qUs")
+                Library:Notify({
+                    Title = "Discord",
+                    Description = "Discord invite copied!",
+                    Time = 3,
+                })
+            end,
+        })
+
+    end
+
+    Home()
+    return Library
 end)
 
-Library:Notify({
-	Title = "Bread",
-	Description = "GUI loaded successfully!",
-	Time = 4,
-})
-
-
-local function Home()
-
-	local home = Window:AddTab({
-		Name = "Home",
-		Description = "Home)",
-		Icon = "box"
-	})
-
-	local LeftGroupBox = home:AddLeftGroupbox("Player", "user")
-	LeftGroupBox:AddLabel('[<font color="rgb(73, 230, 133)">Name</font>] '..player.Name, false)
-
-	LeftGroupBox:AddImage("MyImage", {
-		Image =  game.Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
-		Callback = function(image)
-			print("Image changed!", image)
-		end,
-	})
-
-
-	local Info = home:AddRightGroupbox("INFO")
-
-    Info:AddCheckbox("MyPseudoCodeCheckbox", {
-        Text = "Farm Started",
-        Default = false,
-        Callback = function(val)
-            active_farm = val
-        end
-    })
-
+if not mes then
     
-	slider = Info:AddSlider("Sensitivity", {
-        Text = "Rank Progression",
-        Default = 0,
-        Min = 0,
-        Max = 1000,
-        Rounding = 0,
-        Callback = function()
-            slider:SetValue(stars)
-        end
-    })
-
-	local socialGroup = home:AddRightGroupbox("Social")
-	socialGroup:AddDivider("INFORMATION")
-
-	socialGroup:AddButton({
-		Text = "Discord",
-		Callback = function()
-			setclipboard("https://discord.gg/qaQWkR9qUs")
-			Library:Notify({
-				Title = "Discord",
-				Description = "Discord invite copied!",
-				Time = 3,
-			})
-		end,
-	})
-
+    active_farm = true
 end
 
-Home()
 task.wait(1)
 task.spawn(function()
     
