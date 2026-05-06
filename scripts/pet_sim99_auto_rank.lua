@@ -277,9 +277,8 @@ local function GetCurrentMapWorld()
     end
 end
 
-local function TouchedBlockPlr(block) 
+local function TouchedBlockPlr(block, blockPos) 
     
-    local playerPos = character.PrimaryPart.Position
     local cframe = block.CFrame
     local size = block.Size
                 
@@ -310,8 +309,8 @@ local function TouchedBlockPlr(block)
     end
                 
     local epsilon = 5
-    return  playerPos.X >= (minX - epsilon) and playerPos.X <= (maxX + epsilon) and
-            playerPos.Z >= (minZ - epsilon) and playerPos.Z <= (maxZ + epsilon)
+    return  blockPos.X >= (minX - epsilon) and blockPos.X <= (maxX + epsilon) and
+            blockPos.Z >= (minZ - epsilon) and blockPos.Z <= (maxZ + epsilon)
                 
 end
 
@@ -323,7 +322,7 @@ local function GetMyLocation()
             local ground = i.PARTS_LOD.GROUND.Ground
             if ground then
                 
-                if TouchedBlockPlr(ground) then
+                if TouchedBlockPlr(ground, character.PrimaryPart.Position) then
                     return i, ground
                 end
             end
@@ -372,7 +371,7 @@ end
 
 local function SpawnedPinata()
     return game:GetService("ReplicatedStorage").Network.MiniPinata_Consume:InvokeServer(
-        GetItem("Piñata", true)
+        GetItem("PiГ±ata", true)
     )
 end
 
@@ -394,9 +393,6 @@ end
 
 print("\n\n\n\n\n\n")
 
---print()
---print(GetBestLocation())
-
 local function KillAllThreads()
     for i = #activeThreads, 1, -1 do
         local thread = activeThreads[i]
@@ -406,6 +402,27 @@ local function KillAllThreads()
         table.remove(activeThreads, i)
     end
 end
+
+workspace.__THINGS.Breakables.ChildAdded:Connect(function(ch)
+    
+    local my_loc, _ = GetMyLocation()
+    if  my_loc.Name:match("| (.*)") == ch:GetAttribute("ParentID") and (ch:GetAttribute("BreakableClass") == "Chest" or string.find(ch:GetAttribute("BreakableID"), "Diamond")) then
+        for _, i in ipairs(workspace.__THINGS.Breakables:GetChildren()) do
+            if  my_loc.Name:match("| (.*)") == i:GetAttribute("ParentID") and i:GetAttribute("BreakableClass") == "Chest" then
+                while ch.Parent do
+                    
+                    BreakableOBJ(ch.Name) task.wait(0)
+                end
+            elseif my_loc.Name:match("| (.*)") == i:GetAttribute("ParentID") and string.find(i:GetAttribute("BreakableID"), "Diamond") then
+                while ch.Parent do
+                    BreakableOBJ(ch.Name) task.wait(0)
+                end
+            end
+
+        end
+    end
+end)
+
 
 while true do
     local statuses = {}
@@ -603,63 +620,22 @@ while true do
                 task.wait(0.5)
             end
 
-            if not TouchedBlockPlr(bestLoc.INTERACT.BREAK_ZONES.BREAK_ZONE) then
+            if not TouchedBlockPlr(bestLoc.INTERACT.BREAK_ZONES.BREAK_ZONE, character.PrimaryPart.Position) then
                 
                 player.Character.PrimaryPart.CFrame = bestLoc.INTERACT.BREAK_ZONES.BREAK_ZONE.CFrame
             end
         end
         if i == "BestLocationLuckyBlock" then
             SpawnedLuckyBlock()
-
-            table.insert(activeThreads, task.spawn(function()
-                local function BreakAllOfType(blockType)
-                    while true do
-                        local a, obj = FindObjectBreakable(blockType)
-                        while not a do a, _ = FindObjectBreakable(blockType) task.wait(0.5) end
-                        while (obj and obj.Parent) do
-                            BreakableOBJ(a)
-                            task.wait()
-                            a, obj = FindObjectBreakable(blockType)
-                            if not a then break end
-                        end
-                    end
-                end
-                table.insert(activeThreads, task.spawn(function() BreakAllOfType("Lucky Block Large") end))
-                table.insert(activeThreads, task.spawn(function() BreakAllOfType("Lucky Block Medium") end))
-                table.insert(activeThreads, task.spawn(function() BreakAllOfType("Lucky Block Small") end))
-            end))
         end
 
         if i == "BestLocationComet" then
             SpawnedComet()
-            table.insert(activeThreads, task.spawn(function()
-                local a, _ = FindObjectBreakable("Comet")
-                while not a do a, _ = FindObjectBreakable("Comet") task.wait(0) end
 
-                while _.Parent do
-                    BreakableOBJ(a) task.wait()
-                end
-            end))
         end
 
         if i == "BestLocationPinata" then
             SpawnedPinata()
-            table.insert(activeThreads, task.spawn(function()
-                local a, _ = FindObjectBreakable("Pinata")
-                print(a)
-                while not a do a, _ = FindObjectBreakable("Pinata") task.wait(0) end
-
-                print(a)
-                while _.Parent do
-                    
-
-                    print(_.Parent)
-                    BreakableOBJ(a) task.wait(0)
-                    a, _ = FindObjectBreakable("Pinata")
-                end
-
-                print(_, _.Parent, FindObjectBreakable("Pinata"))
-            end))
         end
 
         if i == "BestLocationCoinJar" then
