@@ -3,10 +3,15 @@ local ht = game:GetService("HttpService")
 local Items = require(game.ReplicatedStorage.Library.Items)
 local container = require(game.ReplicatedStorage.Library.Client.InventoryCmds).Container()
 local Zones = require(game.ReplicatedStorage.Library.Client.ZoneCmds)
+local eggs = require(game:GetService("ReplicatedStorage").Library.Client.EggCmds)
 
+local v_u_11 = require(game.ReplicatedStorage.Library.Client.Save)
 local v_u_6 = require(game.ReplicatedStorage.Library.Client.QuestCmds)
 local v_u_8 = require(game.ReplicatedStorage.Library.Client.GUI)
 local v = require(game:GetService("ReplicatedStorage").Library.Types.Quests)
+
+local RankUtils = require(game:GetService("ReplicatedStorage").Library.Util.RanksUtil)
+local RanksDirectory = require(game:GetService("ReplicatedStorage").Library.Directory.Ranks)
 
 local v_u_40 = v_u_8.Rank().Frame.Side.Middle.Goals
 local v_u_47 = {
@@ -15,6 +20,12 @@ local v_u_47 = {
 	v_u_40.Hard,
 	v_u_40.Extreme
 }
+
+local active_farm = false
+
+local stars = 0
+local totalStars = 1000
+local slider
 
 local activeThreads = {}
 
@@ -335,8 +346,7 @@ end
 local function QuestsINFO()
 
     local info_ = {}
-
-    local v_u_11 = require(game.ReplicatedStorage.Library.Client.Save)
+    
     local v161 = v_u_11.Get()
     local function _get(id)
         for _, i in pairs(v.Goals) do
@@ -371,7 +381,7 @@ end
 
 local function SpawnedPinata()
     return game:GetService("ReplicatedStorage").Network.MiniPinata_Consume:InvokeServer(
-        GetItem("PiГ±ata", true)
+        GetItem("Piñata", true)
     )
 end
 
@@ -391,7 +401,135 @@ local function FindObjectBreakable(Type)
     end
 end
 
+local function GetRankTitleByNumber(rankNumber)
+	for _, rank in pairs(RanksDirectory) do
+		if rank.RankNumber == rankNumber then
+			return rank.Title
+		end
+	end
+	return nil
+end
+
+local function GetRankIdByNumber(rankNumber)
+	for _, rank in pairs(RanksDirectory) do
+		if rank.RankNumber == rankNumber then
+			return rank._id
+		end
+	end
+	return nil
+end
+
 print("\n\n\n\n\n\n")
+
+local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
+local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
+
+
+local Window = Library:CreateWindow({
+	Title = "Bread",
+	Footer = "version: 1.0.0",
+	Icon = 95816097006870,
+	NotifySide = "Right",
+	ToggleKeybind = Enum.KeyCode.RightControl,
+})
+
+local tzOffset = os.time() - os.time(os.date("!*t"))
+local currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
+
+local Watermark = Library:AddDraggableLabel(player.Name .. " | " .. currentTime)
+
+task.spawn(function()
+	while task.wait(0.3) do
+
+		tzOffset = os.time() - os.time(os.date("!*t"))
+		currentTime = os.date("%H:%M:%S", os.time() + tzOffset)
+		Watermark:SetText(player.Name .. " | " .. currentTime)
+	end
+end)
+
+Library:Notify({
+	Title = "Bread",
+	Description = "GUI loaded successfully!",
+	Time = 4,
+})
+
+
+local function Home()
+
+	local home = Window:AddTab({
+		Name = "Home",
+		Description = "Home)",
+		Icon = "box"
+	})
+
+	local LeftGroupBox = home:AddLeftGroupbox("Player", "user")
+	LeftGroupBox:AddLabel('[<font color="rgb(73, 230, 133)">Name</font>] '..player.Name, false)
+
+	LeftGroupBox:AddImage("MyImage", {
+		Image =  game.Players:GetUserThumbnailAsync(player.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420),
+		Callback = function(image)
+			print("Image changed!", image)
+		end,
+	})
+
+
+	local Info = home:AddRightGroupbox("INFO")
+
+    Info:AddCheckbox("MyPseudoCodeCheckbox", {
+        Text = "Farm Started",
+        Default = false,
+        Callback = function(val)
+            active_farm = val
+        end
+    })
+
+    
+	slider = Info:AddSlider("Sensitivity", {
+        Text = "Rank Progression",
+        Default = 0,
+        Min = 0,
+        Max = 1000,
+        Rounding = 0,
+        Callback = function()
+            slider:SetValue(stars)
+        end
+    })
+
+	local socialGroup = home:AddRightGroupbox("Social")
+	socialGroup:AddDivider("INFORMATION")
+
+	socialGroup:AddButton({
+		Text = "Discord",
+		Callback = function()
+			setclipboard("https://discord.gg/qaQWkR9qUs")
+			Library:Notify({
+				Title = "Discord",
+				Description = "Discord invite copied!",
+				Time = 3,
+			})
+		end,
+	})
+
+end
+
+Home()
+task.wait(1)
+task.spawn(function()
+    
+    while task.wait() do
+        local rank_num = v_u_11.Get().Rank
+        local rankId = GetRankIdByNumber(rank_num)
+        
+        totalStars = RankUtils.GetTotalStarsRequired(rankId)
+        stars = v_u_11.Get().RankStars
+
+        if slider then
+            task.wait()
+            slider:SetMax(totalStars)
+            slider:SetValue(stars)
+        end
+    end
+end)
 
 local function KillAllThreads()
     for i = #activeThreads, 1, -1 do
@@ -403,10 +541,12 @@ local function KillAllThreads()
     end
 end
 
+
 workspace.__THINGS.Breakables.ChildAdded:Connect(function(ch)
-    
+
+    if not active_farm then return end
     local my_loc, _ = GetMyLocation()
-    if  my_loc.Name:match("| (.*)") == ch:GetAttribute("ParentID") and (ch:GetAttribute("BreakableClass") == "Chest" or string.find(ch:GetAttribute("BreakableID"), "Diamond")) then
+    if my_loc and  my_loc.Name:match("| (.*)") == ch:GetAttribute("ParentID") and (ch:GetAttribute("BreakableClass") == "Chest" or string.find(ch:GetAttribute("BreakableID"), "Diamond")) then
         for _, i in ipairs(workspace.__THINGS.Breakables:GetChildren()) do
             if  my_loc.Name:match("| (.*)") == i:GetAttribute("ParentID") and i:GetAttribute("BreakableClass") == "Chest" then
                 while ch.Parent do
@@ -428,6 +568,8 @@ while true do
     local statuses = {}
     local used_ = {}
 
+    task.wait(0.1)
+    if not active_farm then continue end
     for _i=4, 1, -1 do
         
 
@@ -591,7 +733,7 @@ while true do
             local name = _GetEggOnChanged(egg.Name:match("%d+")).Name:match("%d+ | (.+)")
             print(name)
             game:GetService("ReplicatedStorage").Network.Eggs_RequestPurchase:InvokeServer(
-                name, 72
+                name, a.GetMaxHatch()
             )
             break
         end
@@ -605,7 +747,7 @@ while true do
             local name = _GetEggOnChanged(egg.Name:match("%d+")).Name:match("%d+ | (.+)")
 
             game:GetService("ReplicatedStorage").Network.Eggs_RequestPurchase:InvokeServer(
-                name, 72
+                name, a.GetMaxHatch()
             )
             break
         end
@@ -619,6 +761,8 @@ while true do
                 player.Character.PrimaryPart.CFrame = bestLoc.PERSISTENT.Teleport.CFrame
                 task.wait(0.5)
             end
+
+            bestLoc:WaitForChild("INTERACT", 999)
 
             if not TouchedBlockPlr(bestLoc.INTERACT.BREAK_ZONES.BREAK_ZONE, character.PrimaryPart.Position) then
                 
@@ -644,7 +788,6 @@ while true do
     end
 
     KillAllThreads()
-    task.wait(0.1)
 end
 
 print("DIE")
