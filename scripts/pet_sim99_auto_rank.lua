@@ -733,7 +733,7 @@ while true do
             local name = _GetEggOnChanged(egg.Name:match("%d+")).Name:match("%d+ | (.+)")
             print(name)
             game:GetService("ReplicatedStorage").Network.Eggs_RequestPurchase:InvokeServer(
-                name, a.GetMaxHatch()
+                name, eggs.GetMaxHatch()
             )
             break
         end
@@ -747,7 +747,7 @@ while true do
             local name = _GetEggOnChanged(egg.Name:match("%d+")).Name:match("%d+ | (.+)")
 
             game:GetService("ReplicatedStorage").Network.Eggs_RequestPurchase:InvokeServer(
-                name, a.GetMaxHatch()
+                name, eggs.GetMaxHatch()
             )
             break
         end
