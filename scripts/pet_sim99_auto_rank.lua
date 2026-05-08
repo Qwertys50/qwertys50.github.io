@@ -597,7 +597,8 @@ while true do
                 
 
                 if i.Type == "COLLECT_ENCHANT" then
-                    
+
+					print("CRAFT")
                     if not table.find(statuses, "CollectEnchant") then 
                         table.insert(statuses, "CollectEnchant")  
                         used_["CollectEnchant"] = {k = i.T}
