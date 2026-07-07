@@ -25,6 +25,7 @@ end
 
 local started = false
 local started_fish = false
+local started_global = false
 
 game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
     if typeof(c) ~= "string" then if c ~= plr then return end end
@@ -60,7 +61,7 @@ end)
 task.spawn(function()
     
     while task.wait(0.1) do
-        
+        if not started_global then continue end
         if started then
             ClickFishing()
         end
@@ -73,9 +74,9 @@ end)
 
 return {
     start = (function()
-        started_fish = true
+        started_global = true
     end),
     stop = (function()
-        started_fish = false
+        started_global = false
     end)
 }
