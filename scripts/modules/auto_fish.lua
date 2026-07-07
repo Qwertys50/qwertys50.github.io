@@ -76,8 +76,10 @@ end)
 return {
     start = (function()
         started_global = true
+        started_fish = true
     end),
     stop = (function()
         started_global = false
+        started_fish = false
     end)
 }
