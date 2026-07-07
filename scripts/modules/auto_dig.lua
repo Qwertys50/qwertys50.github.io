@@ -20,6 +20,8 @@ end
 local coordinate = Vector3.new(1,1,1)
 
 local function FindBlock(X, Y, Z)
+    
+    workspace.__THINGS.__INSTANCE_CONTAINER.Active:WaitForChild("Digsite", math.huge):WaitForChild("Important", math.huge)
     for _, i in ipairs(workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveBlocks:GetChildren()) do
         if i:GetAttribute("Coord") then
             local coord = i:GetAttribute("Coord")
@@ -50,7 +52,7 @@ local function getBottomXZ(X, Z, max_size)
     return nil
 end
 
-local started_global = true
+local started_global = false
 local started_chest = false
 
 game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
@@ -66,6 +68,7 @@ task.spawn(function()
     while task.wait(0.1) do
         if not started_global then continue end
 
+        workspace.__THINGS.__INSTANCE_CONTAINER.Active:WaitForChild("Digsite", math.huge):WaitForChild("Important", math.huge)
         if #workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren() > 0 then
             for _, i in ipairs(workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren()) do
                 started_chest = true
