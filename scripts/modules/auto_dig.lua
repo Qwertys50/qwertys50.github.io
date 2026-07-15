@@ -55,59 +55,60 @@ end
 local started_global = false
 local started_chest = false
 
-game:GetService("ReplicatedStorage").Network:WaitForChild("Instancing_FireCustomFromServer", math.huge)
+if game:GetService("ReplicatedStorage").Network:FindFirstChild("Instancing_FireCustomFromServer") then
 
-game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
-    if not started_global then return end
-    if a ~= "Digsite" then return end
-end)
-
-local x, z = 1, 1
-local max_size = 15
-
-task.spawn(function()
     
-    while task.wait(0.1) do
-        if not started_global then continue end
-
-        workspace.__THINGS.__INSTANCE_CONTAINER.Active:WaitForChild("Digsite", math.huge):WaitForChild("Important", math.huge)
-        if #workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren() > 0 then
-            for _, i in ipairs(workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren()) do
-                started_chest = true
-                plr.Character.PrimaryPart.CFrame = i:GetPivot()
-                task.wait(0.1)
-                DigChest(i:GetAttribute("Coord"))
-            end
-        else 
-            if started_chest then 
-                task.wait(0.5)
-                started_chest = false
-            end
-        end
-
-        if not started_chest then
-            
-            local block = getBottomXZ(x, z, max_size)
-            if not block then
-                x += 1
-                
-                if x > 8 then
-                    x = 0
-                    z += 1
-                    
-                    if z > 8 then
-                        z = 0
-                        max_size += 1
-                    end
+    game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
+        if not started_global then return end
+        if a ~= "Digsite" then return end
+    end)
+    
+    local x, z = 1, 1
+    local max_size = 15
+    
+    task.spawn(function()
+        
+        while task.wait(0.1) do
+            if not started_global then continue end
+    
+            workspace.__THINGS.__INSTANCE_CONTAINER.Active:WaitForChild("Digsite", math.huge):WaitForChild("Important", math.huge)
+            if #workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren() > 0 then
+                for _, i in ipairs(workspace.__THINGS.__INSTANCE_CONTAINER.Active.Digsite.Important.ActiveChests:GetChildren()) do
+                    started_chest = true
+                    plr.Character.PrimaryPart.CFrame = i:GetPivot()
+                    task.wait(0.1)
+                    DigChest(i:GetAttribute("Coord"))
                 end
-            else
-                plr.Character.PrimaryPart.CFrame = block.CFrame
-                Dig(block:GetAttribute("Coord"))
+            else 
+                if started_chest then 
+                    task.wait(0.5)
+                    started_chest = false
+                end
+            end
+    
+            if not started_chest then
+                
+                local block = getBottomXZ(x, z, max_size)
+                if not block then
+                    x += 1
+                    
+                    if x > 8 then
+                        x = 0
+                        z += 1
+                        
+                        if z > 8 then
+                            z = 0
+                            max_size += 1
+                        end
+                    end
+                else
+                    plr.Character.PrimaryPart.CFrame = block.CFrame
+                    Dig(block:GetAttribute("Coord"))
+                end
             end
         end
-    end
-end)
-
+    end)
+end
 return {
     start = (function()
         started_global = true
