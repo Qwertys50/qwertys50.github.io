@@ -27,6 +27,8 @@ local started = false
 local started_fish = false
 local started_global = false
 
+game:GetService("ReplicatedStorage").Network:WaitForChild("Instancing_FireCustomFromServer", math.huge)
+
 game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
     if not started_global then return end
     if typeof(c) ~= "string" then if c ~= plr then return end end
