@@ -55,6 +55,8 @@ end
 local started_global = false
 local started_chest = false
 
+game:GetService("ReplicatedStorage").Network:WaitForChild("Instancing_FireCustomFromServer", math.huge)
+
 game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
     if not started_global then return end
     if a ~= "Digsite" then return end
