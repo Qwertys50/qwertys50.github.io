@@ -27,53 +27,54 @@ local started = false
 local started_fish = false
 local started_global = false
 
-game:GetService("ReplicatedStorage").Network:WaitForChild("Instancing_FireCustomFromServer", math.huge)
-
-game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
-    if not started_global then return end
-    if typeof(c) ~= "string" then if c ~= plr then return end end
-    if a ~= "Fishing" then return end
-
-    if b == "Cast" then
-        started_fish = false
-    end
-
-    if b == "Hook" then
-        
-        task.wait(0.5)
-        PodFishing()
-    end
-
-    if b == "StartAttemptCatch" then
-        started = true
-    end
-
-    if b == "RemoveCast" then
-        started_fish = true
-    end
-
-    if b == "FishingSuccess" then
-        
-        started = false
-        started_fish = true
-        
-    end
-
-end)
-
-task.spawn(function()
+if game:GetService("ReplicatedStorage").Network:FindFirstChild("Instancing_FireCustomFromServer") then
     
-    while task.wait(0.1) do
-        if not started_global then continue end
-        if started then
-            ClickFishing()
+    game:GetService("ReplicatedStorage").Network.Instancing_FireCustomFromServer.OnClientEvent:Connect(function(a, b, c)
+        if not started_global then return end
+        if typeof(c) ~= "string" then if c ~= plr then return end end
+        if a ~= "Fishing" then return end
+    
+        if b == "Cast" then
+            started_fish = false
         end
-
-        if started_fish then
-            StartFishing()
+    
+        if b == "Hook" then
+            
+            task.wait(0.5)
+            PodFishing()
         end
-    end
-end)
+    
+        if b == "StartAttemptCatch" then
+            started = true
+        end
+    
+        if b == "RemoveCast" then
+            started_fish = true
+        end
+    
+        if b == "FishingSuccess" then
+            
+            started = false
+            started_fish = true
+            
+        end
+    
+    end)
+    
+    task.spawn(function()
+        
+        while task.wait(0.1) do
+            if not started_global then continue end
+            if started then
+                ClickFishing()
+            end
+    
+            if started_fish then
+                StartFishing()
+            end
+        end
+    end)
+end
 
 return {
     start = (function()
