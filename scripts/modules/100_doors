@@ -1,0 +1,120 @@
+local function GetBreaker()
+    local b_ = {}
+    for _, i in ipairs(workspace.CurrentRooms["100"]:GetChildren()) do
+        
+        if i.Name == "LiveBreakerPolePickup" then
+            
+            table.insert(b_, i)
+        end
+    end return b_
+end
+local ch = game.Players.LocalPlayer.Character
+local plr = game.Players.LocalPlayer
+
+local backpack = plr:FindFirstChildOfClass("Backpack")
+
+local function GetLibPaper()
+    if ch:FindFirstChild("KeyElectrical") then return ch:FindFirstChild("KeyElectrical") end
+    if backpack:FindFirstChild("KeyElectrical") then return backpack:FindFirstChild("KeyElectrical") end
+end
+
+local function findClosestTrashcan()    
+    
+    local trashcans = workspace.CurrentRooms["100"].Parts:GetChildren()
+    local closest = nil
+    local minDist = math.huge
+    
+    for _, part in pairs(trashcans) do
+        if part.Name == "Trashcan" and part:IsA("BasePart") then
+            local dist = (ch:GetPivot().Position - part.Position).Magnitude
+            if dist < minDist then
+                minDist = dist
+                closest = part
+            end
+        end
+    end
+    
+    return closest
+end
+local function GetGates()
+    local b_ = {}
+    for _, i in ipairs(workspace.CurrentRooms["100"].IndustrialGate:GetChildren()) do
+
+        if i.Name == "Gate" then
+            table.insert(b_, i)
+        end
+    end return b_
+end
+
+local function ClosedGates()
+
+    local gates = GetGates()
+    local gate1 = gates[1]
+    local gate2 = gates[2]
+
+    local pos1 = gate1.Position :: Vector3
+    local pos2 = gate2.Position :: Vector3
+
+    return (pos1-pos2).Magnitude == 7.5
+
+end
+
+while task.wait() and not GetLibPaper() do
+    
+    ch:PivotTo(workspace.CurrentRooms["100"].Assets.ElectricalKeyObtain:GetPivot())
+
+end
+
+for _, i in GetBreaker() do
+    
+
+    while task.wait() and i.Parent do
+        
+        ch:PivotTo(i:GetPivot())
+        for _, q in ipairs(i:GetChildren()) do
+            
+            if q:IsA("ProximityPrompt") then
+                        
+                fireproximityprompt(q)
+            end
+        end
+    end
+end
+
+local function Start()
+    while task.wait() and ClosedGates() do
+        
+        ch:PivotTo(workspace.CurrentRooms["100"].IndustrialGate.Box.Lever.CFrame)
+
+        fireproximityprompt(workspace.CurrentRooms["100"].IndustrialGate.Box.ActivateEventPrompt)
+    end
+
+    ch:PivotTo(findClosestTrashcan().CFrame)
+
+    task.wait(3)
+
+    print( workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty"))
+    while workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty") and task.wait(0) do
+        if not workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty") then break end
+        ch:PivotTo(workspace.CurrentRooms["100"].ElevatorBreakerEmpty.Door.CFrame)
+        fireproximityprompt(workspace.CurrentRooms["100"].ElevatorBreakerEmpty.Prompt)
+
+    end
+
+    while workspace.CurrentCamera.MaxAxisFieldOfView >= 92 and task.wait() do
+        ch:PivotTo(workspace.CurrentRooms["100"].ElevatorBreaker:GetPivot())
+        fireproximityprompt(workspace.CurrentRooms["100"].ElevatorBreaker.ActivateEventPrompt)
+    end
+
+    task.wait(2)
+    game:GetService("ReplicatedStorage").RemotesFolder.EBF:FireServer()
+    task.wait(2)
+
+    while task.wait() do
+        
+        ch:PivotTo(workspace.CurrentRooms["100"].ElevatorCar.ElevatorRoot.CFrame)
+    end
+
+end
+
+return {Start=Start}
