@@ -1,0 +1,134 @@
+local normal_h = 17.5
+local b = normal_h
+
+local ch = game.Players.LocalPlayer.Character
+local plr = game.Players.LocalPlayer
+
+local backpack = plr:FindFirstChildOfClass("Backpack")
+
+local os_ = 20
+local _os_glitch = os.time()
+
+-- Создаем событие End
+local End = Instance.new("BindableEvent")
+
+local function GetLibPaper()
+    
+    if ch:FindFirstChild("LibraryHintPaper") then return ch:FindFirstChild("LibraryHintPaper") end
+    if backpack:FindFirstChild("LibraryHintPaper") then return backpack:FindFirstChild("LibraryHintPaper") end
+end
+
+local function GetCode()
+    local code = ""
+    for i=1, 5 do
+    
+        local ui_book = GetLibPaper().UI[tostring(i)]
+        local ui_code = game:GetService("Players").LocalPlayer.PlayerGui.PermUI.Hints
+
+        for _, q:ImageLabel in ipairs(ui_code:GetChildren()) do
+            if not q:IsA("ImageLabel") then continue end
+
+            if q.ImageRectOffset == ui_book.ImageRectOffset then
+                
+                code = code..''..q.TextLabel.Text
+            end
+        end
+    end return code
+end
+
+local function GetNearestFloor(obj)
+    local nearestFloor = nil
+    local shortestDistance = math.huge
+
+    local playerPos
+    if obj:IsA("Model") then
+        playerPos = obj:GetPivot().Position
+    else
+        playerPos = obj.Position
+    end
+    local parts = workspace.CurrentRooms["50"].Parts:GetChildren()
+    
+    for _, part in ipairs(parts) do
+        if part.Name == "Floor" and part:IsA("BasePart") then
+            local closestPoint = part:GetClosestPointOnSurface(playerPos)
+            local distance = (playerPos - closestPoint).Magnitude
+            
+            print(distance)
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestFloor = part
+            end
+        end
+    end
+    
+    return nearestFloor
+end
+
+local function GetAll50Books()
+    local b = {}
+    for _, i in ipairs(workspace.CurrentRooms["50"].Assets.Bookshelves1:GetDescendants()) do
+        if i.Name == "LiveHintBook" then
+            table.insert(b, i)
+        end
+    end return b
+end
+
+local function Start()
+    print("Script started!")
+    
+    game:GetService("ReplicatedStorage").RemotesFolder.UseEnemyModule.OnClientEvent:Connect(function(a)
+        if a == "Glitch" then
+            b += 12
+            _os_glitch = os.time()
+        end
+    end)
+
+    while task.wait() do
+        
+        if ch:FindFirstChild("LibraryHintPaper") then break end
+        if backpack:FindFirstChild("LibraryHintPaper") then break end
+
+        local pos = workspace.CurrentRooms["50"].LibraryHintPaper:GetPivot()
+
+        ch:PivotTo(CFrame.new(Vector3.new(pos.Position.X, pos.Position.Y + b, pos.Position.Z)))
+
+        if _os_glitch + os_ <= os.time() then
+
+            while task.wait() and not GetLibPaper() do
+                fireproximityprompt(workspace.CurrentRooms["50"].LibraryHintPaper.ModulePrompt)
+            end
+        end
+    end
+
+    for _, book in GetAll50Books() do
+        local pos_y = GetNearestFloor(book).Position.Y + normal_h
+        local d = false
+        local con
+        con = game:GetService("RunService").Heartbeat:Connect(function(deltaTime)
+            if d then return end
+            if ch.Humanoid.Health == 0 then d = true end
+            if not book.Parent then con:Disconnect() end
+            local bookPivot = book:GetPivot()
+            ch:PivotTo(CFrame.new(Vector3.new(bookPivot.X, pos_y, bookPivot.Z)))
+        end)
+
+        book.Destroying:Connect(function()
+            con:Disconnect()
+        end)
+
+        while task.wait() and book.Parent do fireproximityprompt(book.ActivateEventPrompt) end
+    end
+    
+    while #GetCode() ~= 5 do task.wait() end
+
+    local Event = game:GetService("ReplicatedStorage").RemotesFolder.PL
+    Event:FireServer(
+        GetCode()
+    )
+    
+    print("Script finished!")
+    
+    End:Fire()
+end
+
+return {End=End, Start=Start}
