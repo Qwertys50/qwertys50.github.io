@@ -59,29 +59,31 @@ local function ClosedGates()
 
 end
 
-while task.wait() and not GetLibPaper() do
-    
-    ch:PivotTo(workspace.CurrentRooms["100"].Assets.ElectricalKeyObtain:GetPivot())
 
-end
+local function Start()
 
-for _, i in GetBreaker() do
-    
-
-    while task.wait() and i.Parent do
+    while task.wait() and not GetLibPaper() do
         
-        ch:PivotTo(i:GetPivot())
-        for _, q in ipairs(i:GetChildren()) do
+        ch:PivotTo(workspace.CurrentRooms["100"].Assets.ElectricalKeyObtain:GetPivot())
+
+    end
+
+    for _, i in GetBreaker() do
+        
+
+        while task.wait() and i.Parent do
             
-            if q:IsA("ProximityPrompt") then
-                        
-                fireproximityprompt(q)
+            ch:PivotTo(i:GetPivot())
+            for _, q in ipairs(i:GetChildren()) do
+                
+                if q:IsA("ProximityPrompt") then
+                            
+                    fireproximityprompt(q)
+                end
             end
         end
     end
-end
 
-local function Start()
     while task.wait() and ClosedGates() do
         
         ch:PivotTo(workspace.CurrentRooms["100"].IndustrialGate.Box.Lever.CFrame)
