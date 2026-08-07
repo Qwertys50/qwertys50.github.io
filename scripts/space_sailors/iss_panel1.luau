@@ -1,9 +1,9 @@
 local RunService = game:GetService("RunService")
 
-local function startProximityPromptSpam(prompt)
+local function startProximityPromptSpam(prompt, a_)
     local connections = {}
     
-    for i = 1, 30 do
+    for i = 1, a_ do
         local conn
         conn = RunService.Heartbeat:Connect(function()
             if not prompt.Enabled then 
@@ -18,7 +18,7 @@ local function startProximityPromptSpam(prompt)
     return connections
 end
 
-return {Start=function()
+return {Start=function(a_)
     for _, i in ipairs(workspace.SolarArrayMain.SolarArrayIndividual:GetChildren()) do
 
         for _, q in ipairs(i.DebrisHoles:GetChildren()) do
@@ -27,7 +27,7 @@ return {Start=function()
                 
                 game.Players.LocalPlayer.Character.PrimaryPart.CFrame = q.CFrame
                 task.wait(0.5)
-                startProximityPromptSpam(q.ProximityPrompt)
+                startProximityPromptSpam(q.ProximityPrompt, a_)
             end
         end
     end    
