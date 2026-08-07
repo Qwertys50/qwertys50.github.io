@@ -1,4 +1,4 @@
-local activateEating = true
+local activateEating = false
 local plr = game.Players.LocalPlayer
 local isProcessing = false
 local VirtualUser = game:GetService("VirtualUser")
