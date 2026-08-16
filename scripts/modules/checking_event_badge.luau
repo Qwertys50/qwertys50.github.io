@@ -1,6 +1,6 @@
 local HttpService = game:GetService("HttpService")
 local CHECK_INTERVAL = 10
-G_.hasBadge = {}
+_G.hasBadge = {}
 
 local BadgeReceived = Instance.new("BindableEvent")
 
@@ -14,8 +14,8 @@ local function checkPlayer(player, id)
     if res.StatusCode == 200 then
         local ok, data = pcall(HttpService.JSONDecode, HttpService, res.Body)
         if ok and data.data and #data.data > 0 then
-            if not G_.hasBadge[player.UserId] then
-                G_.hasBadge[player.UserId] = true
+            if not _G.hasBadge[player.UserId] then
+                _G.hasBadge[player.UserId] = true
                 BadgeReceived:Fire(player)
             end
         end
@@ -23,7 +23,7 @@ local function checkPlayer(player, id)
 end
 
 game.Players.PlayerRemoving:Connect(function(player)
-    G_.hasBadge[player.UserId] = nil
+    _G.hasBadge[player.UserId] = nil
 end)
 
 return {Start=function(id)
