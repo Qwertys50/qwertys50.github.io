@@ -1,6 +1,8 @@
 local HttpService = game:GetService("HttpService")
 local CHECK_INTERVAL = 10
-_G.hasBadge = {}
+
+if not _G then rawset(getfenv(0), "_G", {}) end
+if not _G.hasBadge then _G.hasBadge = {} end
 
 local BadgeReceived = Instance.new("BindableEvent")
 
