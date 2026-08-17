@@ -21,7 +21,7 @@ local function checkPlayer(player, id)
             if not _G.hasBadge[id] then _G.hasBadge[id] = {} end
             if not _G.hasBadge[id][player.UserId] then
                 _G.hasBadge[id][player.UserId] = true
-                BadgeReceived:Fire(player)
+                BadgeReceived:Fire(player, id)
             end
         end
     end
@@ -29,21 +29,23 @@ end
 
 game.Players.PlayerRemoving:Connect(function(player)
     for _, id in ids do
-        _G.hasBadge[id][player.UserId] = nil
+        if _G.hasBadge[id] then
+            _G.hasBadge[id][player.UserId] = nil
+        end
     end
 end)
 
-return {Start=function(id)
-
-    table.insert(ids, id)
-
-    task.spawn(function()
-        while true do
-            for _, player in ipairs(game.Players:GetPlayers()) do
-                task.spawn(checkPlayer, player, id)
+return {
+    Start = function(id)
+        table.insert(ids, id)
+        task.spawn(function()
+            while true do
+                for _, player in ipairs(game.Players:GetPlayers()) do
+                    task.spawn(checkPlayer, player, id)
+                end
+                task.wait(CHECK_INTERVAL)
             end
-            task.wait(CHECK_INTERVAL)
-        end
-    end)
-
-end, Event=BadgeReceived}
+        end)
+    end,
+    Event = BadgeReceived
+}
