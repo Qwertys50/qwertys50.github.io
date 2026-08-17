@@ -4,6 +4,8 @@ local CHECK_INTERVAL = 10
 if not _G then rawset(getfenv(0), "_G", {}) end
 if not _G.hasBadge then _G.hasBadge = {} end
 
+local ids = {}
+
 local BadgeReceived = Instance.new("BindableEvent")
 
 local function checkPlayer(player, id)
@@ -16,8 +18,9 @@ local function checkPlayer(player, id)
     if res.StatusCode == 200 then
         local ok, data = pcall(HttpService.JSONDecode, HttpService, res.Body)
         if ok and data.data and #data.data > 0 then
-            if not _G.hasBadge[player.UserId] then
-                _G.hasBadge[player.UserId] = true
+            if not _G.hasBadge[id] then _G.hasBadge[id] = {} end
+            if not _G.hasBadge[id][player.UserId] then
+                _G.hasBadge[id][player.UserId] = true
                 BadgeReceived:Fire(player)
             end
         end
@@ -25,10 +28,15 @@ local function checkPlayer(player, id)
 end
 
 game.Players.PlayerRemoving:Connect(function(player)
-    _G.hasBadge[player.UserId] = nil
+    for _, id in ids do
+        _G.hasBadge[id][player.UserId] = nil
+    end
 end)
 
 return {Start=function(id)
+
+    table.insert(ids, id)
+
     task.spawn(function()
         while true do
             for _, player in ipairs(game.Players:GetPlayers()) do
