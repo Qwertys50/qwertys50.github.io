@@ -111,7 +111,7 @@ function WaypointFinder.GetWaypointsToObject(targetObject, options)
     local targetPosition
     
     if type(targetObject) == "Instance" then
-        if targetObject:IsA("BasePart") then
+        if targetObject:IsA("BasePart") or targetObject:IsA("MeshPart") then
             targetPosition = targetObject.Position
         elseif targetObject:IsA("Model") and targetObject.PrimaryPart then
             targetPosition = targetObject.PrimaryPart.Position
