@@ -19,7 +19,7 @@ end
 
 local function isPointOnGround(position)
     local raycastParams = RaycastParams.new()
-    raycastParams.Filtertypeof = Enum.RaycastFiltertypeof.Blacklist
+    raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
     raycastParams.FilterDescendantsInstances = {getCharacter()}
     
     local ray = workspace:Raycast(position + Vector3.new(0, 2, 0), Vector3.new(0, -5, 0), raycastParams)
@@ -60,7 +60,7 @@ local function findWalkableNearby(position, rootPart)
         local testPos = Vector3.new(position.X + off.X, groundHeight, position.Z + off.Z)
         
         local raycastParams = RaycastParams.new()
-        raycastParams.Filtertypeof = Enum.RaycastFiltertypeof.Blacklist
+        raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
         raycastParams.FilterDescendantsInstances = {getCharacter()}
         
         local ray = workspace:Raycast(testPos + Vector3.new(0, 2, 0), Vector3.new(0, -5, 0), raycastParams)
@@ -208,7 +208,7 @@ function WaypointFinder.VisualizeWaypoints(waypointData, parent)
     local function spawnNode(position, isJump)
         local p = Instance.new("Part")
         p.Size = Vector3.new(0.4, 0.4, 0.4)
-        p.Shape = Enum.Parttypeof.Ball
+        p.Shape = Enum.PartType.Ball
         p.Material = Enum.Material.Neon
         p.BrickColor = isJump and BrickColor.new("Bright red") or BrickColor.new("Cyan")
         p.Position = position
@@ -243,7 +243,7 @@ function WaypointFinder.VisualizeWaypoints(waypointData, parent)
     
     local goalPart = Instance.new("Part")
     goalPart.Size = Vector3.new(1, 0.5, 1)
-    goalPart.Shape = Enum.Parttypeof.Cylinder
+    goalPart.Shape = Enum.PartType.Cylinder
     goalPart.Material = Enum.Material.Neon
     goalPart.BrickColor = BrickColor.new("Bright green")
     goalPart.Position = waypointData.WalkablePoint
