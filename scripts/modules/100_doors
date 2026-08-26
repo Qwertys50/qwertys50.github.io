@@ -123,7 +123,7 @@ local function Start()
     while task.wait() do
         ch:PivotTo(getNearestTrashcan().CFrame)
         
-        if tick() - startTime >= 30 then break end
+        if tick() - startTime >= 60 then break end
     end
 
     task.wait(3)
