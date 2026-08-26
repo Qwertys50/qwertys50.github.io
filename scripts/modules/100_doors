@@ -1,3 +1,13 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local RemotesFolder = ReplicatedStorage:WaitForChild("RemotesFolder", 999)
+local Crouch = RemotesFolder:WaitForChild("Crouch")
+local Motor = game:GetService("ReplicatedStorage").RemotesFolder.MotorReplication
+
+task.spawn(function()t=true while task.wait()do Crouch:FireServer(t,t)end end)
+task.spawn(function()while task.wait()do Motor:FireServer(54674567456746746574567456745674567456745674567465) end end)
+
+
 local function GetBreaker()
     local b_ = {}
     for _, i in ipairs(workspace.CurrentRooms["100"]:GetChildren()) do
@@ -59,6 +69,23 @@ local function ClosedGates()
 
 end
 
+local function getNearestTrashcan()
+    local parts = workspace.CurrentRooms["100"].Parts:GetChildren()
+    local nearest = nil
+    local minDist = math.huge
+    
+    for _, part in ipairs(parts) do
+        if part.Name == "Trashcan" and part:IsA("BasePart") then
+            local dist = (game.Players.LocalPlayer.Character:GetPivot().Position - part.Position).Magnitude
+            if dist < minDist then
+                minDist = dist
+                nearest = part
+            end
+        end
+    end
+    
+    return nearest
+end
 
 local function Start()
 
@@ -91,11 +118,17 @@ local function Start()
         fireproximityprompt(workspace.CurrentRooms["100"].IndustrialGate.Box.ActivateEventPrompt)
     end
 
-    ch:PivotTo(findClosestTrashcan().CFrame)
+    local startTime = tick()
+    
+    while task.wait() do
+        ch:PivotTo(getNearestTrashcan().CFrame)
+        
+        if tick() - startTime >= 30 then break end
+    end
 
     task.wait(3)
 
-    print( workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty"))
+    print(workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty"))
     while workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty") and task.wait(0) do
         if not workspace.CurrentRooms["100"]:FindFirstChild("ElevatorBreakerEmpty") then break end
         ch:PivotTo(workspace.CurrentRooms["100"].ElevatorBreakerEmpty.Door.CFrame)
