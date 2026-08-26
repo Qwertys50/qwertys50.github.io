@@ -74,14 +74,19 @@ local function GetAll50Books()
 end
 
 local function Start()
-    print("Script started!")
-    
-    game:GetService("ReplicatedStorage").RemotesFolder.UseEnemyModule.OnClientEvent:Connect(function(a)
-        if a == "Glitch" then
-            b += 12
-            _os_glitch = os.time()
-        end
-    end)
+    local Pos49Door = workspace.CurrentRooms["49"].Door:GetPivot().Position
+    local Pos50Door = workspace.CurrentRooms["50"].Door:GetPivot().Position
+
+    local center_  = (Pos50Door-Pos49Door).Magnitude / 2
+    local pos = CFrame.new(Pos49Door.X - center_, Pos49Door.Y + 17.5, Pos49Door.Z)
+
+    local startTime = tick()
+
+    while task.wait() do
+        ch:PivotTo(pos)
+        
+        if tick() - startTime >= 8 then break end
+    end
 
     while task.wait() do
         
@@ -118,8 +123,12 @@ local function Start()
 
         while task.wait() and book.Parent do fireproximityprompt(book.ActivateEventPrompt) end
     end
+
+    local l = ch:GetPivot()
     
-    while #GetCode() ~= 5 do task.wait() end
+    while #GetCode() ~= 5 do task.wait() 
+        ch:PivotTo(CFrame.new(l.Position.X, l.Position.Y+15, l.Position.Z))
+    end
 
     local Event = game:GetService("ReplicatedStorage").RemotesFolder.PL
     Event:FireServer(
@@ -131,4 +140,4 @@ local function Start()
     End:Fire()
 end
 
-return {End=End, Start=Start}
+return {Start=Start}
