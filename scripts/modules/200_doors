@@ -1,0 +1,55 @@
+return function()	
+    local RemotesFolder = game.ReplicatedStorage:FindFirstChild("RemotesFolder")
+    local ch = game.Players.LocalPlayer.Character
+    local IsCutscene = false
+	local CutsceneConnection = RemotesFolder.Cutscene.OnClientEvent:Connect(function()
+		IsCutscene = true
+		task.wait(7)
+		IsCutscene = false
+	end)
+
+    local function GetNextPump()
+        local Highest = {
+            Height = -69420,
+            Object = nil
+        }
+        for _, Object in pairs(workspace.CurrentRooms["100"]:GetDescendants()) do
+            if Object.Name == "WaterPump" and Object.ScreenUI.OnFrame.Visible then
+                if Object.PrimaryPart and Object.PrimaryPart.Position.Y > Highest.Height then
+                    Highest.Object = Object
+                    Highest.Height = Object.PrimaryPart.Position.Y
+                end
+            end
+        end
+        return Highest.Object
+    end
+
+    local function HandlePump(Pump)
+
+        while task.wait() do
+			if IsCutscene then
+				continue
+			end
+
+            ch:PivotTo(Pump:GetPivot())
+
+            local Prompt = Pump:FindFirstChild("ValvePrompt", true)
+            if Prompt then
+                fireproximityprompt(Prompt)
+            end
+
+            if Pump.ScreenUI.OnFrame.Visible == false then
+                break
+            end
+        end
+    end
+
+    while task.wait() do
+        local Pump = GetNextPump()
+        if Pump then
+            HandlePump(Pump)
+        else
+            break
+        end
+    end
+end
