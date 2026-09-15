@@ -1,3 +1,17 @@
+local rs = false
+
+task.spawn(function()
+
+    while task.wait() do
+        if ch.Humanoid.Health == 0 then return end
+        if workspace:FindFirstChild("RushMoving") or workspace:FindFirstChild("AmbushMoving") or workspace:FindFirstChild("GlitchRush") or workspace:FindFirstChild("GlitchAmbush") then
+			rs = true
+		else
+			rs = false
+		end
+	end
+end)
+
 return function()	
     local RemotesFolder = game.ReplicatedStorage:FindFirstChild("RemotesFolder")
     local ch = game.Players.LocalPlayer.Character
@@ -27,9 +41,8 @@ return function()
     local function HandlePump(Pump)
 
         while task.wait() do
-			if IsCutscene then
-				continue
-			end
+			if IsCutscene then continue end
+			if rs then continue end
 
             ch:PivotTo(Pump:GetPivot())
 
