@@ -125,9 +125,7 @@ local function Start()
 
     local l = ch:GetPivot()
     
-    while #GetCode() ~= 5 do task.wait() 
-        ch:PivotTo(CFrame.new(l.Position.X, l.Position.Y+15, l.Position.Z))
-    end
+	local a = os.clock() + 10
 
     local Event = game:GetService("ReplicatedStorage").RemotesFolder.PL
     Event:FireServer(
