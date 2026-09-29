@@ -85,7 +85,7 @@ local function Start()
     while task.wait() do
         ch:PivotTo(pos)
         
-        if tick() - startTime >= 8 then break end
+        if tick() - startTime >= 20 then break end
     end
 
     while task.wait() do
