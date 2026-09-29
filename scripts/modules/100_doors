@@ -5,8 +5,6 @@ local Crouch = RemotesFolder:WaitForChild("Crouch")
 local Motor = game:GetService("ReplicatedStorage").RemotesFolder.MotorReplication
 
 task.spawn(function()t=true while task.wait()do Crouch:FireServer(t,t)end end)
-task.spawn(function()while task.wait()do Motor:FireServer(54674567456746746574567456745674567456745674567465) end end)
-
 
 local function GetBreaker()
     local b_ = {}
@@ -118,13 +116,28 @@ local function Start()
         fireproximityprompt(workspace.CurrentRooms["100"].IndustrialGate.Box.ActivateEventPrompt)
     end
 
-    local startTime = tick()
-    
-    while task.wait() do
-        ch:PivotTo(getNearestTrashcan().CFrame)
-        
-        if tick() - startTime >= 60 then break end
-    end
+	local duration = 20 
+	local stopDistance = 3
+
+	local startPos = ch:GetPivot().Position
+	local startTime = os.clock() + 6
+
+	while true do
+
+		local targetPos = getNearestTrashcan().Position
+		local elapsed = os.clock() - startTime
+
+		local alpha = math.clamp(elapsed / duration, 0, 1)
+		local smooth = alpha * alpha * (3 - 2 * alpha)
+
+		local newPos = startPos:Lerp(targetPos, smooth)
+		ch:PivotTo(CFrame.new(newPos) * (ch:GetPivot() - ch:GetPivot().Position))
+		if alpha >= 1 or (targetPos - ch:GetPivot().Position).Magnitude <= stopDistance then
+			break
+		end
+
+		task.wait()
+	end
 
     task.wait(3)
 
