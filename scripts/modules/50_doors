@@ -125,13 +125,14 @@ local function Start()
 
     local l = ch:GetPivot()
     
-	local a = os.clock() + 10
-
-    local Event = game:GetService("ReplicatedStorage").RemotesFolder.PL
-    Event:FireServer(
-        GetCode()
-    )
-    
+	local a = os.clock() + 2
+	while task.wait() and a >= os.clock() do
+	    local Event = game:GetService("ReplicatedStorage").RemotesFolder.PL
+	    Event:FireServer(
+	        GetCode()
+	    )
+	end
+	    
     print("Script finished!")
     
     End:Fire()
