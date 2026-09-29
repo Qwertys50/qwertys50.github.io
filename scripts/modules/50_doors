@@ -138,4 +138,4 @@ local function Start()
     End:Fire()
 end
 
-return {Start=Start}
+return {Start=Start, Code=GetCode}
