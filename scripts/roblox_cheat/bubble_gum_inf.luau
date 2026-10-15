@@ -436,23 +436,25 @@ local AntiAfk
 AntiAfk = GroupboxMain:AddCheckbox("AntiAfk", {
     Text = "Enable Anti Afk",
     Default = false,
-    Callback = function()
-        AntiAfk:SetDisabled(true)
-        local GC = getconnections or get_signal_cons
-        if GC then
-            for i,v in pairs(GC(plr.Idled)) do
-                if v["Disable"] then
-                    v["Disable"](v)
-                elseif v["Disconnect"] then
-                    v["Disconnect"](v)
+    Callback = function(value)
+        if value then
+            AntiAfk:SetDisabled(true) 
+            local GC = getconnections or get_signal_cons
+            if GC then
+                for i,v in pairs(GC(plr.Idled)) do
+                    if v["Disable"] then
+                        v["Disable"](v)
+                    elseif v["Disconnect"] then
+                        v["Disconnect"](v)
+                    end
                 end
-            end
-        else
-            plr.Idled:Connect(function()
-                local VirtualUser = game:GetService("VirtualUser")
-                VirtualUser:CaptureController()
-                VirtualUser:ClickButton2(Vector2.new())
-            end)
+            else
+                plr.Idled:Connect(function()
+                    local VirtualUser = game:GetService("VirtualUser")
+                    VirtualUser:CaptureController()
+                    VirtualUser:ClickButton2(Vector2.new())
+                end)
+            end 
         end
     end
 })
