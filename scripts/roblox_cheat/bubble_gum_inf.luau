@@ -109,7 +109,7 @@ local auto_play_mini_game = false
 
 local auto_best_event_egg = false
 
-local best_event_egg = "Creaking Egg"
+local best_event_egg = "Luminant Egg"
 
 local auto_house = false
 
@@ -859,8 +859,11 @@ game.RunService.Heartbeat:Connect(function(deltaTime)
                     plr.Character:PivotTo(CFrame.new(model_egg) * CFrame.new(0, 3, 5))
                 end
             end
-
-            status_text = "Opened Egg: "..opened_egg_value
+            
+            pcall(function()
+                status_text = "Opened Egg: "..opened_egg_value
+            
+            end)
             remoteEvent:FireServer("HatchEgg", opened_egg_value, math.huge)
         end
     end
@@ -1050,8 +1053,10 @@ local function BuildStatus()
     end
 
     if opened_egg_value ~= "" then
-        table.insert(lines, "[" .. col(C.info, "Egg") .. "] " .. opened_egg_value ..
-            (disable_egg_animation and col(C.dim, " (no anim)") or ""))
+        pcall(function()
+            table.insert(lines, "[" .. col(C.info, "Egg") .. "] " .. opened_egg_value ..
+                (disable_egg_animation and col(C.dim, " (no anim)") or ""))
+        end)
     end
 
     if selected_minigame then
