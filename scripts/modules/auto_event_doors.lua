@@ -225,7 +225,8 @@ local function OpenDoor(num)
 end
 
 
-local NewCharacter = game.Players.LocalPlayer.Character
+local player = game.Players.LocalPlayer
+local NewCharacter = player.Character or player.CharacterAdded:Wait()
 local Humanoid = NewCharacter.Humanoid
 local RootPart = NewCharacter:FindFirstChild("HumanoidRootPart")
 
