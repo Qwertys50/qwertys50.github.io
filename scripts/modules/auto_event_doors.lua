@@ -190,7 +190,7 @@ local function OpenDoor(num)
 
     if tonumber(num) == 1 then
         if not room.Assets.CandyVault:GetAttribute("Locked") then 
-            while task.wait() and not room.Assets.CandyVault:GetAttribute("Occupied") do
+            while task.wait() and not game:GetService("Players").LocalPlayer.PlayerGui.MainUI:FindFirstChild("Frame") do
                 fireproximityprompt(room.Assets.CandyVault.Door.Valve.Handle.UnlockPrompt)
                 ch:PivotTo(room.Assets.CandyVault.Door.Valve.Handle.CFrame)
             end
