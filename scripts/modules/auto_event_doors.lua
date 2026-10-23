@@ -206,8 +206,9 @@ end
 local function GetDepot()
     local id = currentRoomID.Value
     while true do
-        local assets = workspace.CurrentRooms[tostring(id)] and workspace.CurrentRooms[tostring(id)].Assets
+        local assets = workspace.CurrentRooms:FindFirstChild(tostring(id))
         if assets then
+            assets =  workspace.CurrentRooms[tostring(id)].Assets
             local nearest, dist = nil, math.huge
             for _, v in ipairs(assets:GetChildren()) do
                 if v.Name == "DepotHalloween" then
@@ -216,6 +217,7 @@ local function GetDepot()
                 end
             end
             if nearest then return nearest end
+        else return nil 
         end
         id -= 1
     end
@@ -319,6 +321,7 @@ local function FarmCandy()
 
         while task.wait() and FindItemCh(n) do
             local d = GetDepot()
+            if not d then return end
             ch:PivotTo(d:GetPivot() * CFrame.new(3, 0, 3))
             fireproximityprompt(d.ActivatePrompt)
         end
