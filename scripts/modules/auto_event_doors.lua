@@ -1,4 +1,4 @@
-local currentRoomID = game:GetService("ReplicatedStorage").GameData.LatestRoom :: IntValue
+local currentRoomID = game:GetService("ReplicatedStorage"):WaitForChild('GameData', math.huge).LatestRoom :: IntValue
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemotesFolder = ReplicatedStorage:WaitForChild("RemotesFolder", 999)
@@ -203,16 +203,20 @@ local function OpenDoor(num)
                 solveCandyVault()
             end
 
-            task.delay(4, function()
-                local a  = os.clock() + 4
-
-                while task.wait(0.5) and a >= os.clock() do
-                    game:GetService("ReplicatedStorage").FloorReplicated.ClientRemote.SkipCutscene.Remote:FireServer(
-                        1,
-                        true
-                    )
-                end
+            local end_cat = true
+            local Event = game:GetService("ReplicatedStorage").FloorReplicated.ClientRemote.SkipCutscene.Remote
+            Event.OnClientEvent:Connect(function(a)
+                if a == "Open" then end_cat = false end
             end)
+
+            while task.wait() and end_cat do
+                ch:PivotTo(workspace.CurrentRooms["1"].CutsceneZone.CFrame)
+            end
+
+            local a  = os.clock() + 4
+            while task.wait(0.5) and a >= os.clock() do
+                Event:FireServer(1,true)
+            end
         end
     end
 
