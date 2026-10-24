@@ -25,7 +25,7 @@ local player = game.Players.LocalPlayer
 local ch = player.Character or player.CharacterAdded:Wait()
 local Humanoid = ch:WaitForChild("Humanoid", math.huge)
 
-game:GetService("ReplicatedStorage").ReplicaRemoteEvents.Replica_ReplicaSetValue.OnClientEvent:Connect(function() game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end)
+ game:GetService("ReplicatedStorage").RemotesFolder.DeathHint.OnClientEvent:Connect(function() game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end)
 
 local function GetAllItems()
     local all_items = {}
