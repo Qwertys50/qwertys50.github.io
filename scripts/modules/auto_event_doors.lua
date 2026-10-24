@@ -20,7 +20,10 @@ workspace.Camera.ChildAdded:Connect(function(a0: Instance)
     if a0.Name == "Screech" then a0:Destroy() end
 end)
 
-local ch = game.Players.LocalPlayer.Character
+
+local player = game.Players.LocalPlayer
+local ch = player.Character or player.CharacterAdded:Wait()
+local Humanoid = ch:WaitForChild("Humanoid", math.huge)
 
 game:GetService("ReplicatedStorage").RemotesFolder.RippleStatistics.OnClientEvent:Connect(function(a)
     if a.DeathReason then
@@ -223,12 +226,6 @@ local function OpenDoor(num)
         door.ClientOpen:FireServer()
     end
 end
-
-
-local player = game.Players.LocalPlayer
-local NewCharacter = player.Character or player.CharacterAdded:Wait()
-local Humanoid = NewCharacter:WaitForChild("Humanoid", math.huge)
-local RootPart = NewCharacter:FindFirstChild("HumanoidRootPart")
 
 task.spawn(function()
     while task.wait(0.3) do
