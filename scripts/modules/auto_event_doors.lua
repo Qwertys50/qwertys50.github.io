@@ -25,13 +25,7 @@ local player = game.Players.LocalPlayer
 local ch = player.Character or player.CharacterAdded:Wait()
 local Humanoid = ch:WaitForChild("Humanoid", math.huge)
 
-game:GetService("ReplicatedStorage").RemotesFolder.RippleStatistics.OnClientEvent:Connect(function(a)
-    if a.DeathReason then
-
-        game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer()
-    end
-        
-end)
+game:GetService("ReplicatedStorage").ReplicaRemoteEvents.Replica_ReplicaSetValue.OnClientEvent:Connect(function() game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end)
 
 local function GetAllItems()
     local all_items = {}
@@ -170,7 +164,7 @@ local function FarmCandy()
         while task.wait() and FindItemCh(n) do
             local d = GetDepot()
             if not d then return end
-            ch:PivotTo(d:GetPivot() * CFrame.new(3, 0, 3))
+            ch:PivotTo(d:GetPivot() * CFrame.new(5, 0, 5))
             fireproximityprompt(d.ActivatePrompt)
         end
 
