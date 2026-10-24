@@ -227,7 +227,7 @@ end
 
 local player = game.Players.LocalPlayer
 local NewCharacter = player.Character or player.CharacterAdded:Wait()
-local Humanoid = NewCharacter.Humanoid
+local Humanoid = NewCharacter:WaitForChild("Humanoid", math.huge)
 local RootPart = NewCharacter:FindFirstChild("HumanoidRootPart")
 
 task.spawn(function()
