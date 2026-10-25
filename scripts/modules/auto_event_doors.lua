@@ -1,6 +1,8 @@
 if _G.runed then return end
 _G.runed = true
 
+print("go johnny go")
+
 local currentRoomID = game:GetService("ReplicatedStorage"):WaitForChild('GameData', math.huge).LatestRoom :: IntValue
 
 local os_t = os.clock() + 500
