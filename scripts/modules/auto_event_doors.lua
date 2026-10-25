@@ -1,3 +1,6 @@
+if _G.runed then return end
+_G.runed = true
+
 local currentRoomID = game:GetService("ReplicatedStorage"):WaitForChild('GameData', math.huge).LatestRoom :: IntValue
 
 local os_t = os.clock() + 500
@@ -8,12 +11,10 @@ local id_skip = 1
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemotesFolder = ReplicatedStorage:WaitForChild("RemotesFolder", 999)
 local Crouch = RemotesFolder:WaitForChild("Crouch")
-local Motor = game:GetService("ReplicatedStorage").RemotesFolder.MotorReplication
 
 task.spawn(function()
     while task.wait() do 
         Crouch:FireServer(true, true)
-        Motor:FireServer(-650)
     end 
 end) 
 
