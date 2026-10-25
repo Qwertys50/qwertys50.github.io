@@ -1,5 +1,10 @@
 local currentRoomID = game:GetService("ReplicatedStorage"):WaitForChild('GameData', math.huge).LatestRoom :: IntValue
 
+local os_t = os.clock() + 500
+local end_cat2 = true
+
+local id_skip = 1
+
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemotesFolder = ReplicatedStorage:WaitForChild("RemotesFolder", 999)
 local Crouch = RemotesFolder:WaitForChild("Crouch")
@@ -22,10 +27,42 @@ end)
 
 
 local player = game.Players.LocalPlayer
-local ch = player.Character or player.CharacterAdded:Wait()
-local Humanoid = ch:WaitForChild("Humanoid", math.huge)
+local _ = player.Character or player.CharacterAdded:Wait()
+local Humanoid = player.Character:WaitForChild("Humanoid", math.huge)
 
- game:GetService("ReplicatedStorage").RemotesFolder.DeathHint.OnClientEvent:Connect(function() game:GetService("ReplicatedStorage").RemotesFolder.Lobby:FireServer() end)
+
+task.spawn(function()
+    game:GetService("ReplicatedStorage"):WaitForChild("FloorReplicated", math.huge):WaitForChild("ClientRemote", math.huge):WaitForChild("VaultEnding", math.huge)
+    game:GetService("ReplicatedStorage").FloorReplicated.ClientRemote.VaultEnding.Remote.OnClientEvent:Connect(function() game:GetService("ReplicatedStorage").RemotesFolder.PlayAgain:FireServer() end)
+end)
+
+local function hasPhrase(events, phrase)
+    for _, event in ipairs(events) do
+
+        if event.EventName == "Caption" and event.Arguments then
+
+            local text = event.Arguments[2]
+            if text == phrase then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+game:GetService("ReplicatedStorage").RemotesFolder.CharacterAnimator.OnClientEvent:Connect(function(a, b)
+    if a == "Start" then
+        if b.Spec and b.Spec.Events then
+            id_skip = b.Id
+            game:GetService("ReplicatedStorage").FloorReplicated.ClientRemote.SkipCutscene.Remote:FireServer(id_skip,true)
+            if hasPhrase(b.Spec.Events, "Aha!") then
+                end_cat2 = false
+            end
+
+        end
+    end
+
+end)
 
 local function GetAllItems()
     local all_items = {}
@@ -54,7 +91,7 @@ local function GetDepot()
             local nearest, dist = nil, math.huge
             for _, v in ipairs(assets:GetChildren()) do
                 if v.Name == "DepotHalloween" then
-                    local d = (v:GetPivot().Position - ch:GetPivot().Position).Magnitude
+                    local d = (v:GetPivot().Position - player.Character:GetPivot().Position).Magnitude
                     if d < dist then nearest, dist = v, d end
                 end
             end
@@ -66,7 +103,7 @@ local function GetDepot()
 end
 
 local function FindItemCh(name)
-    return ch:FindFirstChild(name)
+    return player.Character:FindFirstChild(name)
 end
 
 local function solveCandyVault()
@@ -158,13 +195,13 @@ local function FarmCandy()
         
         while task.wait() and i:FindFirstChild("ModulePrompt") do
             fireproximityprompt(i.ModulePrompt)
-            ch:PivotTo(i:GetPivot())
+            player.Character:PivotTo(i:GetPivot())
         end
 
         while task.wait() and FindItemCh(n) do
             local d = GetDepot()
             if not d then return end
-            ch:PivotTo(d:GetPivot() * CFrame.new(5, 0, 5))
+            player.Character:PivotTo(d:GetPivot() * CFrame.new(5, 0, 5))
             fireproximityprompt(d.ActivatePrompt)
         end
 
@@ -180,47 +217,48 @@ local function OpenDoor(num)
     local room = workspace.CurrentRooms[tostring(num)]
 
     if tonumber(num) == 52 then
+        game:GetService("ReplicatedStorage").RemotesFolder.Revive:FireServer()
+
         while task.wait() do
-            ch:PivotTo(workspace.CurrentRooms["52"].Parts.Door.CFrame)
+            if game.Players.LocalPlayer.Character then
+                game.Players.LocalPlayer.Character:PivotTo(workspace.CurrentRooms["52"].Parts.Door.CFrame)
+            end
         end
+    end
+
+    if tonumber(num) > 4 and tonumber(num) < 52 then 
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0 
     end
 
     if tonumber(num) == 1 then
         if not room.Assets.CandyVault:GetAttribute("Locked") then 
             while task.wait() and not game:GetService("Players").LocalPlayer.PlayerGui.MainUI:FindFirstChild("Frame") do
                 fireproximityprompt(room.Assets.CandyVault.Door.Valve.Handle.UnlockPrompt)
-                ch:PivotTo(room.Assets.CandyVault.Door.Valve.Handle.CFrame)
+                player.Character:PivotTo(room.Assets.CandyVault.Door.Valve.Handle.CFrame)
             end
 
             while task.wait() and not room.Assets.CandyVault:GetAttribute("Locked") do
-                ch:PivotTo(room.Assets.CandyVault.Door.Valve.Handle.CFrame)
+                player.Character:PivotTo(room.Assets.CandyVault.Door.Valve.Handle.CFrame)
                 solveCandyVault()
             end
 
-            local end_cat = true
             local Event = game:GetService("ReplicatedStorage").FloorReplicated.ClientRemote.SkipCutscene.Remote
-            Event.OnClientEvent:Connect(function(a)
-                if a == "Open" then end_cat = false end
-            end)
 
-            while task.wait() and end_cat do
-                ch:PivotTo(workspace.CurrentRooms["1"].CutsceneZone.CFrame)
+
+            while task.wait() and end_cat2 do
+                player.Character:PivotTo(workspace.CurrentRooms["1"].CutsceneZone.CFrame)
+                Event:FireServer(id_skip,true)
             end
 
-            local a  = os.clock() + 4
-            while task.wait(0.5) and a >= os.clock() do
-                Event:FireServer(1,true)
-            end
         end
     end
 
 
     local door = workspace.CurrentRooms[tostring(num)].Door
-    while task.wait() and ch:GetAttribute("InCutscene") do end
     while task.wait() and not (door:GetAttribute("Opened") == true) do  
         if rush_moving then continue end
     
-        ch:PivotTo(door:GetPivot())
+        player.Character:PivotTo(door:GetPivot())
         door.ClientOpen:FireServer()
     end
 end
@@ -230,5 +268,13 @@ task.spawn(function()
 
         FarmCandy()
         OpenDoor(tostring(currentRoomID.Value))
+    end
+end)
+
+task.spawn(function()
+    while task.wait() do
+        if os_t <= os.clock() then
+            game:GetService("ReplicatedStorage").RemotesFolder.PlayAgain:FireServer()
+        end
     end
 end)
