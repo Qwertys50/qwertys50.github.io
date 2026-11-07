@@ -109,7 +109,7 @@ local auto_play_mini_game = false
 
 local auto_best_event_egg = false
 
-local best_event_egg = "Luminant Egg"
+local best_event_egg = "Wintery Egg"
 
 local auto_house = false
 
@@ -430,6 +430,7 @@ local GroupboxMain = Tab:AddLeftGroupbox("Main", "house")
 local GroupboxEggs = Tab:AddLeftGroupbox("Eggs", "egg")
 local GroupboxBubble = Tab:AddRightGroupbox("Bubble", "shell")
 local GroupboxEvent = Tab:AddRightGroupbox("Event", "party-popper")
+local GroupboxEvent2 = Tab:AddRightGroupbox("Event Halloween", "party-popper")
 local GroupboxMiniGames = Tab:AddRightGroupbox("Mini Games", "party-popper")
 
 local AntiAfk
@@ -530,7 +531,7 @@ GroupboxBubble:AddCheckbox("AutoSellBubble", {
 })
 
 
-GroupboxEvent:AddCheckbox("AutoRebirth", {
+GroupboxEvent2:AddCheckbox("AutoRebirth", {
 	Text = "Auto Rebirth",
     Callback = function(state)
         auto_rebirth = state
@@ -538,7 +539,7 @@ GroupboxEvent:AddCheckbox("AutoRebirth", {
     end
 })
 
-GroupboxEvent:AddCheckbox("AutoHouse", {
+GroupboxEvent2:AddCheckbox("AutoHouse", {
 	Text = "Auto Collect House",
     Callback = function(state)
         auto_house = state
@@ -552,7 +553,7 @@ GroupboxEvent:AddCheckbox("AutoBestEgg", {
     end
 })
 
-GroupboxEvent:AddCheckbox("AutoChestHell", {
+GroupboxEvent2:AddCheckbox("AutoChestHell", {
 	Text = "Auto Open Chest Hell",
     Callback = function(state)
         auto_collect_event_chest = state
