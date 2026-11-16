@@ -3,12 +3,7 @@ local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
 local env = (getgenv and getgenv()) or _G
-if env._EggOnPartInstances then
-    for _, inst in env._EggOnPartInstances do
-        pcall(function() inst.Delete() end)
-    end
-end
-env._EggOnPartInstances = {}
+env._EggOnPartInstances = env._EggOnPartInstances or {}
 
 local LocalPlayer = Players.LocalPlayer
 
@@ -811,20 +806,43 @@ function Game:_destroy()
     self.dead = true
     if self._heartbeat   then self._heartbeat:Disconnect();   self._heartbeat   = nil end
     if self._destroyConn then self._destroyConn:Disconnect(); self._destroyConn = nil end
-    self.gui:Destroy()
+    if self.gui then self.gui:Destroy() end
+    if self._onDestroy then
+        local cb = self._onDestroy
+        self._onDestroy = nil
+        cb()
+    end
 end
 
 local EggOnPart = {}
 
+local function removeFromRegistry(api)
+    local list = env._EggOnPartInstances
+    if not list then return end
+    for i = #list, 1, -1 do
+        if list[i] == api then table.remove(list, i) end
+    end
+end
+
 function EggOnPart.new(target, options)
+    options = options or {}
     local part = resolvePart(target)
     if not part then
         warn("[EggOnPart] нужен BasePart (или Model с PrimaryPart)")
         return nil
     end
 
-    local g = Game.new(part, options or {})
-    local api = { game = g }
+    local face = options.Face or Enum.NormalId.Front
+
+    for _, inst in ipairs(table.clone(env._EggOnPartInstances)) do
+        if inst.part == part and inst.face == face then
+            pcall(inst.Delete)
+        end
+    end
+
+    options.Face = face
+    local g = Game.new(part, options)
+    local api = { game = g, part = part, face = face }
 
     function api.Move()
         if g.dead or g._transitioning then return end
@@ -839,9 +857,7 @@ function EggOnPart.new(target, options)
             g:_setCatcherRunning(true)
         elseif s == "GameOver" and g.goTimer <= 0 then
             task.spawn(function()
-                g:_doTransition(function()
-                    g:_toMenu()
-                end)
+                g:_doTransition(function() g:_toMenu() end)
             end)
         end
     end
@@ -854,16 +870,22 @@ function EggOnPart.new(target, options)
 
     function api.Delete()
         g:_destroy()
-        local list = env._EggOnPartInstances
-        if list then
-            for i = #list, 1, -1 do
-                if list[i] == api then table.remove(list, i) end
-            end
-        end
     end
+
+    g._onDestroy = function() removeFromRegistry(api) end
 
     table.insert(env._EggOnPartInstances, api)
     return api
+end
+
+function EggOnPart.GetAll()
+    return table.clone(env._EggOnPartInstances)
+end
+
+function EggOnPart.DeleteAll()
+    for _, inst in ipairs(table.clone(env._EggOnPartInstances)) do
+        pcall(inst.Delete)
+    end
 end
 
 return EggOnPart
