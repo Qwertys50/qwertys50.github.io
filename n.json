@@ -1,0 +1,29 @@
+{
+    "bootloader": "grub",
+    "hostname": "arch-vm",
+    "kernels": [
+        "linux"
+    ],
+    "profile": null,
+    "timezone": "Europe/Moscow",
+    "disk_config": {
+        "config_type": "default_layout",
+        "device_modifications": [
+            {
+                "device": "/dev/sda",
+                "wipe": true
+            }
+        ]
+    },
+    "network_config": {
+        "type": "nm"
+    },
+    "user_accounts": [
+        {
+            "username": "user",
+            "password": "Пароль123",
+            "sudo": true
+        }
+    ],
+    "root_encryption": false
+}
