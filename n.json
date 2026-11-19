@@ -12,13 +12,13 @@
                 "partitions": [
                     {
                         "btrfs": [],
-                        "flags": ["boot"],
+                        "flags": ["boot", "esp"],
                         "fs_type": "fat32",
-                        "length": { "sector_size": null, "total_size": null, "unit": "B", "value": 536870912 },
                         "mount_options": [],
                         "mountpoint": "/boot",
                         "obj_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
-                        "start": { "sector_size": { "sector_size": null, "total_size": null, "unit": "B", "value": 512 }, "total_size": null, "unit": "sectors", "value": 2048 },
+                        "size": { "sector_size": { "unit": "B", "value": 512 }, "unit": "MiB", "value": 512 },
+                        "start": { "sector_size": { "unit": "B", "value": 512 }, "unit": "MiB", "value": 1 },
                         "status": "create",
                         "type": "primary"
                     },
@@ -26,11 +26,11 @@
                         "btrfs": [],
                         "flags": [],
                         "fs_type": "ext4",
-                        "length": { "sector_size": null, "total_size": null, "unit": "B", "value": 26214400000 },
                         "mount_options": [],
                         "mountpoint": "/",
                         "obj_id": "f6e5d4c3-b2a1-4f9e-8d7c-6b5a4f3e2d1c",
-                        "start": { "sector_size": { "sector_size": null, "total_size": null, "unit": "B", "value": 512 }, "total_size": null, "unit": "sectors", "value": 1050624 },
+                        "size": { "sector_size": { "unit": "B", "value": 512 }, "unit": "GiB", "value": 25 },
+                        "start": { "sector_size": { "unit": "B", "value": 512 }, "unit": "MiB", "value": 513 },
                         "status": "create",
                         "type": "primary"
                     }
