@@ -3,15 +3,31 @@
     "audio_config": null,
     "bootloader": "grub",
     "debug": false,
-    "disk_config": {
-        "config_type": "default_layout",
-        "device_modifications": [
-            {
-                "device": "/dev/sda",
-                "wipe": true
-            }
-        ]
-    },
+"disk_config": {
+    "config_type": "manual_partitioning",
+    "device_modifications": [
+        {
+            "device": "/dev/sda",
+            "wipe": true,
+            "partitions": [
+                {
+                    "flags": ["boot"],
+                    "fs_type": "fat32",
+                    "mountpoint": "/boot",
+                    "start": { "unit": "MiB", "value": 1 },
+                    "size": { "unit": "MiB", "value": 512 }
+                },
+                {
+                    "flags": [],
+                    "fs_type": "ext4",
+                    "mountpoint": "/",
+                    "start": { "unit": "MiB", "value": 513 },
+                    "size": { "unit": "MiB", "value": 25000 }
+                }
+            ]
+        }
+    ]
+}
     "hostname": "arch-vm",
     "kernels": ["linux"],
     "locale_config": {
