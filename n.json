@@ -10,24 +10,49 @@
                 "device": "/dev/sda",
                 "partitions": [
                     {
+                        "btrfs": [],
+                        "dev_path": null,
                         "flags": ["boot"],
                         "fs_type": "fat32",
-                        "length": { "unit": "MiB", "value": 512 },
+                        "mount_options": [],
                         "mountpoint": "/boot",
-                        "start": { "unit": "MiB", "value": 1 },
+                        "obj_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+                        "size": {
+                            "sector_size": { "unit": "B", "value": 512 },
+                            "unit": "MiB",
+                            "value": 512
+                        },
+                        "start": {
+                            "sector_size": { "unit": "B", "value": 512 },
+                            "unit": "MiB",
+                            "value": 1
+                        },
                         "status": "create",
                         "type": "primary"
                     },
                     {
+                        "btrfs": [],
+                        "dev_path": null,
                         "flags": [],
                         "fs_type": "ext4",
-                        "length": { "unit": "MiB", "value": 0 },
+                        "mount_options": [],
                         "mountpoint": "/",
-                        "start": { "unit": "MiB", "value": 513 },
+                        "obj_id": "f6e5d4c3-b2a1-4f9e-8d7c-6b5a4f3e2d1c",
+                        "size": {
+                            "sector_size": { "unit": "B", "value": 512 },
+                            "unit": "MiB",
+                            "value": 0
+                        },
+                        "start": {
+                            "sector_size": { "unit": "B", "value": 512 },
+                            "unit": "MiB",
+                            "value": 513
+                        },
                         "status": "create",
                         "type": "primary"
                     }
-                ]
+                ],
+                "wipe": true
             }
         ]
     },
@@ -35,8 +60,8 @@
     "kernels": ["linux"],
     "locale_config": {
         "kb_layout": "us",
-        "sys_lang": "en_US.UTF-8",
-        "sys_enc": "UTF-8"
+        "sys_enc": "UTF-8",
+        "sys_lang": "en_US.UTF-8"
     },
     "network_config": { "type": "nm" },
     "ntp": true,
