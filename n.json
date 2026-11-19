@@ -1,29 +1,46 @@
 {
+    "archinstall-language": "Russian",
+    "audio_config": null,
     "bootloader": "grub",
-    "hostname": "arch-vm",
-    "kernels": [
-        "linux"
-    ],
-    "profile": null,
-    "timezone": "Europe/Moscow",
+    "debug": false,
     "disk_config": {
-        "config_type": "default_layout",
+        "config_type": "manual_partitioning",
         "device_modifications": [
             {
                 "device": "/dev/sda",
-                "wipe": true
+                "partitions": [
+                    {
+                        "flags": ["boot"],
+                        "fs_type": "fat32",
+                        "length": { "unit": "MiB", "value": 512 },
+                        "mountpoint": "/boot",
+                        "start": { "unit": "MiB", "value": 1 },
+                        "status": "create",
+                        "type": "primary"
+                    },
+                    {
+                        "flags": [],
+                        "fs_type": "ext4",
+                        "length": { "unit": "MiB", "value": 0 },
+                        "mountpoint": "/",
+                        "start": { "unit": "MiB", "value": 513 },
+                        "status": "create",
+                        "type": "primary"
+                    }
+                ]
             }
         ]
     },
-    "network_config": {
-        "type": "nm"
+    "hostname": "arch-vm",
+    "kernels": ["linux"],
+    "locale_config": {
+        "kb_layout": "us",
+        "sys_lang": "en_US.UTF-8",
+        "sys_enc": "UTF-8"
     },
-    "user_accounts": [
-        {
-            "username": "user",
-            "password": "Пароль123",
-            "sudo": true
-        }
-    ],
-    "root_encryption": false
+    "network_config": { "type": "nm" },
+    "ntp": true,
+    "profile_config": null,
+    "swap": true,
+    "timezone": "Europe/Moscow"
 }
